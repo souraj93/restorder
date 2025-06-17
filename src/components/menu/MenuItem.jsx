@@ -42,16 +42,16 @@ export default function MenuItem(menuItem) {
   }, [cartData]);
 
   const handleAddToCard = async (menu, count) => {
-    const hasOptions = sizes?.length > 0 || extraIngredientPrices?.length > 0;
-    if (hasOptions && !showPopup) {
-      setShowPopup(true);
-      return;
-    }
+    // const hasOptions = sizes?.length > 0 || extraIngredientPrices?.length > 0;
+    // if (hasOptions && !showPopup) {
+    //   setShowPopup(true);
+    //   return;
+    // }
 
     addToCart(menu, count);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    setShowPopup(false);
+    // setShowPopup(false);
   };
 
   function handleExtraThingClick(ev, extraThing) {

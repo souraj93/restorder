@@ -29,7 +29,7 @@ export default function CartPage() {
 
   let subtotal = 0;
   for (const p of cartProducts) {
-    subtotal += p.product_price;
+    subtotal += (p.product_price*p.inCartCount) || 0;
   }
 
   if (cartProductsClient?.length === 0) {
@@ -52,14 +52,14 @@ export default function CartPage() {
           subtotal={subtotal}
           deletedFromCart={deletedFromCart}
         />
-        <div className="bg-gray-100 p-4 rounded-lg">
+        {/* <div className="bg-gray-100 p-4 rounded-lg">
           <AddressInputs
             disabled={false}
             user={user}
             total={subtotal + 5}
             cartProductsClient={cartProductsClient}
           />
-        </div>
+        </div> */}
       </div>
     </section>
   );

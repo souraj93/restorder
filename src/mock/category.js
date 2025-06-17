@@ -1,13 +1,13 @@
 export const mockCategories = [
   {
     _id: "1",
-    name: "Pizzas",
+    name: "Thali",
     description: "Delicious pizzas with various toppings.",
     
   },
   {
     _id: "2",
-    name: "Salads",
+    name: "Starter and Snacks",
     description: "Fresh and healthy salads.",
     
   },

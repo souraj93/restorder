@@ -1,5 +1,7 @@
 import React from "react";
 import CartProduct from "@/components/menu/CartProduct";
+import { Card, CardBody } from "@nextui-org/react";
+
 export default function ProductsList({
   cartProductsClient,
   subtotal,
@@ -20,18 +22,25 @@ export default function ProductsList({
         ))}
       <div className="py-2 pr-16 flex justify-end items-center">
         <div className="text-gray-500">
-          Subtotal:
+          {/* Subtotal:
           <br />
           Delivery:
-          <br />
+          <br /> */}
           Total:
         </div>
         <div className="font-semibold pl-2 text-right">
-          ${subtotal}
-          <br />
+          Rs {(subtotal).toFixed(2)}
+          {/* <br />
           $5
-          <br />${subtotal + 5}
+          <br />${subtotal + 5} */}
         </div>
+      </div>
+      <div>
+        <Card shadow="lg" disableAnimation="true" className="bg-green-50">
+        <CardBody>
+          <p className="text-center font-bold text-xl">Checkout</p>
+        </CardBody>
+      </Card>
       </div>
     </div>
   );

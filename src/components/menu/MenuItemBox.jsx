@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import PlusMinus from "@/components/ui/PlusMinus";
 // import FlyingButton from "react-flying-item";
 export default function MenuItemBox({ menuItem, handleAddToCard }) {
   const { name, description, image, basePrice, inCartCount } = menuItem;
@@ -13,35 +14,17 @@ export default function MenuItemBox({ menuItem, handleAddToCard }) {
       <p className="text-gray-500 text-sm line-clamp-3">{description}</p>
       {/* <FlyingButton targetTop={"5%"} targetLeft={"95%"} src={image}> */}
       {inCartCount > 0 ?
-        <div className="flex items-center justify-center gap-4">
-          <button
-            className="bg-gray-200 text-xl rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-300"
-            onClick={() => {
-              // Remove one item from cart
-              handleAddToCard(menuItem, -1);
-            }}
-            aria-label="Decrease quantity"
-          >
-            -
-          </button>
-          <span className="text-lg font-bold w-8 text-center">{inCartCount}</span>
-          <button
-            className="bg-gray-200 text-xl rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-300"
-            onClick={() => {
-              // Add one more item to cart
-              handleAddToCard(menuItem, 1);
-            }}
-            aria-label="Increase quantity"
-          >
-            +
-          </button>
-        </div>
+        <PlusMinus 
+          menuItem={menuItem}
+          handleAddToCard={handleAddToCard}
+          inCartCount={inCartCount}
+        />
         :
         <button
           onClick={() => handleAddToCard(menuItem, 1)}
           className="bg-primary text-white rounded-full px-6 py-2 mt-1"
         >
-          Add to cart {basePrice} $
+          Add to cart Rs {basePrice}
         </button>}
       {/* </FlyingButton> */}
     </div>
