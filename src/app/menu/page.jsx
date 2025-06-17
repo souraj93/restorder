@@ -125,8 +125,7 @@ export default function Menu() {
       <div id="scrollContainer" style={{ height: '400px', overflowY: 'scroll' }}>
         {menuData.length && categories?.length > 0 ?
           categories.map((c) => (
-            <section className="mt-2" id={c._id}>
-              <div key={c._id}>
+            <section className="mt-2" id={c._id} key={c._id}>
                 <div className="px-4">
                   <SectionHeaders mainHeader={c.name} />
                 </div>
@@ -137,7 +136,6 @@ export default function Menu() {
                       <MenuItem key={item._id} {...item} />
                     ))}
                 </div>
-              </div>
             </section>
           )) : null}
       </div>
