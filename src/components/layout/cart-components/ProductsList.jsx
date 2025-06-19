@@ -20,7 +20,7 @@ export default function ProductsList({
             onRemove={!!deletedFromCart && (() => deletedFromCart(index))}
           />
         ))}
-      <div className="py-2 pr-16 flex justify-end items-center">
+      <div className="py-2 px-2 flex justify-end items-center">
         <div className="text-gray-500">
           {/* Subtotal:
           <br />
@@ -35,12 +35,12 @@ export default function ProductsList({
           <br />${subtotal + 5} */}
         </div>
       </div>
-      <div>
+      <div className="p-2">
         <Card shadow="lg" disableAnimation="true" className="bg-green-50">
-        <CardBody>
-          <p className="text-center font-bold text-xl">Checkout</p>
-        </CardBody>
-      </Card>
+          <CardBody>
+            <button className="text-center font-bold text-xl">Place Order</button>
+          </CardBody>
+        </Card>
       </div>
     </div>
   );

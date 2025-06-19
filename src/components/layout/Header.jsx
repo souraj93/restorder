@@ -33,16 +33,16 @@ export default function Header() {
     <header className="flex items-center justify-between font-poppins font-xl">
       <Navbar onMenuOpenChange={setIsMenuOpen}>
         <NavbarContent>
-          <NavbarMenuToggle
+          {/* <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
-          />
+          /> */}
           <NavbarBrand>
             <Link
               className="animate-bounce text-primary font-semibold text-2xl"
-              href="/"
+              href="/menu"
             >
-              SRayen PIZZA
+              Cook My Food
             </Link>
           </NavbarBrand>
         </NavbarContent>
@@ -93,7 +93,7 @@ export default function Header() {
         <Link href={"/cart"} className="relative">
           <ShoppingCart />
           {count > 0 && (
-            <span className="absolute -top-2 -right-4 bg-primary text-white text-xs p-1 rounded-full leading-3">
+            <span className="absolute -top-2 -right-4 bg-primary text-white text-xs px-2 py-1 rounded-full leading-3">
               {count}
             </span>
           )}

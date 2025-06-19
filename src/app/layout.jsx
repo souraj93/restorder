@@ -39,7 +39,7 @@ export default async function RootLayout({ children }) {
             <Providers>
               <Header />
               {children}
-              <Footer />
+              {/* <Footer /> */}
             </Providers>
           </main>
         </SessionProvider>

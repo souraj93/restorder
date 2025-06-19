@@ -108,7 +108,7 @@ export default function Menu() {
           {filters.map((filter) => (
             <button
               key={filter.label}
-              className={`px-3 py-1 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max font-semibold`}
+              className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max font-semibold`}
               onClick={() => {
                 setFilters(filters.map(f =>
                   f.label === filter.label ? { ...f, selected: !f.selected } : f
@@ -122,14 +122,14 @@ export default function Menu() {
         </div>
       </div>
 
-      <div id="scrollContainer" style={{ height: '400px', overflowY: 'scroll' }}>
+      <div id="scrollContainer"  className="scrollbar-hide" style={{ height: '100vh', overflowY: 'scroll' }}>
         {menuData.length && categories?.length > 0 ?
           categories.map((c) => (
             <section className="mt-2" id={c._id} key={c._id}>
                 <div className="px-4">
                   <SectionHeaders mainHeader={c.name} />
                 </div>
-                <div className="grid sm:grid-cols-3 gap-4 mt-4 mb-4">
+                <div className="grid grid-cols-2 gap-4 my-4 px-4">
                   {menuData
                     ?.filter((item) => item?.category?._id === c._id)
                     .map((item) => (
