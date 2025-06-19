@@ -39,7 +39,7 @@ export const mockMenuItems = [
     _id: "5",
     name: "Paneer Cutlet",
     description: "Crispy paneer cutlets served with mint chutney.",
-    basePrice: 229,
+    basePrice: 2299,
     isVeg: true,
     category: { _id: "2", name: "Starter and Snacks" },
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4WgHKAVcjSG9IXDRbB5prngjkm8IH9dwcA&s",

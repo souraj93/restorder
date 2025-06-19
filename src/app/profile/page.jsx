@@ -24,9 +24,9 @@ export default function ProfilePage() {
   }, []);
 
   const session = useSession();
-  if (session.status === "unauthenticated") {
-    redirect("/login");
-  }
+  // if (session.status === "unauthenticated") {
+  //   redirect("/login");
+  // }
   const fetcher = async () => {
     // const response = await axios.get("/api/profile");
     return {};
@@ -35,11 +35,11 @@ export default function ProfilePage() {
   const { data: user, error, isLoading } = useSWR("user", fetcher);
 
   let tabs = [
-    {
-      id: "Profile",
-      label: "Profile",
-      content: <ProfileTab user={user} />,
-    },
+    // {
+    //   id: "Profile",
+    //   label: "Profile",
+    //   content: <ProfileTab user={user} />,
+    // },
     {
       id: "Categories",
       label: "Categories",
@@ -50,11 +50,11 @@ export default function ProfilePage() {
       label: "Menu",
       content: <MenuItemTab />,
     },
-    {
-      id: "Users",
-      label: "Users",
-      content: <UsersTab />,
-    },
+    // {
+    //   id: "Users",
+    //   label: "Users",
+    //   content: <UsersTab />,
+    // },
     // {
     //   id: "Orders",
     //   label: "Orders",
@@ -62,15 +62,15 @@ export default function ProfilePage() {
     // },
   ];
 
-  if (error) return <Error />;
-  if (isLoading) return <Loading />;
+  // if (error) return <Error />;
+  // if (isLoading) return <Loading />;
   return (
     <>
-      {session.status === "loading" ? (
+      {/* {session.status === "loading" ? (
         <Loading />
-      ) : (
-        <section className="mt-14 w-full mx-auto font-semibold">
-          {user?.admin ? (
+      ) : ( */}
+        <section className=" w-full mx-auto font-semibold">
+          {/* {user?.admin ? ( */}
             <Tabs
               aria-label="Dynamic tabs"
               items={tabs}
@@ -84,7 +84,7 @@ export default function ProfilePage() {
                 </Tab>
               )}
             </Tabs>
-          ) : (
+          {/* ) : (
             <Tabs aria-label="Dynamic tabs" items={tabs[0]}>
               <Tab key={tabs[0].id} title={tabs[0].label}>
                 <Card>
@@ -97,9 +97,9 @@ export default function ProfilePage() {
                 </Card>
               </Tab>
             </Tabs>
-          )}
+          )} */}
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }

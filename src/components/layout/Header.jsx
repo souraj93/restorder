@@ -46,7 +46,7 @@ export default function Header() {
             </Link>
           </NavbarBrand>
         </NavbarContent>
-        {menuItems.map((item) => (
+        {/* {menuItems.map((item) => (
           <NavbarContent
             className="hidden sm:flex gap-4"
             justify="center"
@@ -62,8 +62,8 @@ export default function Header() {
               </Link>
             </NavbarItem>
           </NavbarContent>
-        ))}
-        <NavbarContent justify="end">
+        ))} */}
+        {/* <NavbarContent justify="end">
           <NavbarItem className="hidden sm:flex gap-2">
             <Buttons />
           </NavbarItem>
@@ -88,7 +88,7 @@ export default function Header() {
             </NavbarMenuItem>
           ))}
           <Buttons />
-        </NavbarMenu>
+        </NavbarMenu> */}
 
         <Link href={"/cart"} className="relative">
           <ShoppingCart />

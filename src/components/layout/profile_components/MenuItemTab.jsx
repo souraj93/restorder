@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import { redirect } from "next/navigation";
@@ -24,6 +24,8 @@ import ExtraIngredientPricesForm from "@/components/layout/profile_components/me
 import MenuList from "@/components/layout/profile_components/menu_comonents/MenuList";
 import useSWR, { mutate } from "swr";
 import ChevronDown from "@/components/icons/ChevronDown";
+import { useMenuItems } from "@/Hooks/useMenuItems";
+import { useCategories } from "@/Hooks/useCategories";
 export default function MenuItemTab({ user }) {
   const session = useSession();
   const [selectedMenu, setSelectedMenu] = useState({});
@@ -32,6 +34,7 @@ export default function MenuItemTab({ user }) {
   const [imagefile, setImageFile] = useState(null);
 
   const [menuImage, setMenuImage] = useState("");
+  const { menuItems } = useMenuItems();
 
   const [sizeDisplay, setSizeDisplay] = useState(false);
 
@@ -39,13 +42,23 @@ export default function MenuItemTab({ user }) {
 
   const [IngredientDisplay, setIngredientDisplay] = useState(false);
 
+  const [menuList, setMenuList] = useState([]);
+
+  useEffect(() => {
+    if (menuItems) {
+      setMenuList(menuItems);
+    }
+  }, [menuItems]);
+
   const fetcher = async () => {
     const response = await axios.get("/api/category");
     return response.data;
   };
 
   // Get categories data from server with SWR
-  const { data: categories, error, isLoading } = useSWR("categories", fetcher);
+  // const { data: categories, error, isLoading } = useSWR("categories", fetcher);
+  const { categories, error, isLoading } = useCategories();
+
 
   const [sizes, setSizes] = useState(
     selectedMenu?.sizes || []
@@ -122,39 +135,66 @@ export default function MenuItemTab({ user }) {
       itemName,
       description,
       basePrice,
-      sizes,
       category,
-      extraIngredientPrices,
     } = formik?.values;
+    
 
-    const imageURL = menuImage && (await uploadImage());
-    try {
-      const response = await axios.put(`/api/menu/${id}`, {
-        name: itemName,
-        description: description,
-        image: menuImage && imageURL,
-        category: category,
-        basePrice: basePrice,
-        sizes: sizes,
-        extraIngredientPrices: extraIngredientPrices,
-      });
-
-      if (response.status === 200) {
-        toast.success("Category has been updated successfully!");
-        mutate("menuItems");
-        setSaved(!saved);
-        formik.resetForm();
-        setSelectedMenu({});
-      } else {
-        const errorData = response.data;
-        setApiError(errorData.message);
+    setApiError("");
+    const localMenu = [...menuList];
+    localMenu.forEach((item) => {
+      if (item._id === id) {
+        item.name = itemName;
+        item.description = description;
+        item.basePrice = +basePrice;
+        item.category = category;
+        item.image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4WgHKAVcjSG9IXDRbB5prngjkm8IH9dwcA&s";
       }
-    } catch (error) {
-      error?.response?.data?.message
-        ? setApiError(error.response.data.message)
-        : setApiError("An unexpected error occurred. Please try again later.");
-    }
+    });
+    setMenuList(localMenu);
+    setSaved(!saved);
+    formik.resetForm();
+    setSelectedMenu({});
+
+
+    // const imageURL = menuImage && (await uploadImage());
+    // try {
+    //   const response = await axios.put(`/api/menu/${id}`, {
+    //     name: itemName,
+    //     description: description,
+    //     image: menuImage && imageURL,
+    //     category: category,
+    //     basePrice: basePrice,
+    //     sizes: sizes,
+    //     extraIngredientPrices: extraIngredientPrices,
+    //   });
+
+    //   if (response.status === 200) {
+    //     toast.success("Category has been updated successfully!");
+    //     mutate("menuItems");
+    //     setSaved(!saved);
+    //     formik.resetForm();
+    //     setSelectedMenu({});
+    //   } else {
+    //     const errorData = response.data;
+    //     setApiError(errorData.message);
+    //   }
+    // } catch (error) {
+    //   error?.response?.data?.message
+    //     ? setApiError(error.response.data.message)
+    //     : setApiError("An unexpected error occurred. Please try again later.");
+    // }
   };
+
+  useEffect(() => {
+    // Reset the saved state after a short delay to show the success message
+    if (saved) {
+      const timer = setTimeout(() => {
+        setSaved(false);
+      }, 2000); // Adjust the delay as needed
+
+      return () => clearTimeout(timer); // Cleanup the timer on unmount or when saved changes
+    }
+  }, [saved]);
 
   const formik = useFormik({
     enableReinitialize: enable, //to enable reinitialization //Rq:here enable is a state (true when an item is selected)
@@ -176,60 +216,79 @@ export default function MenuItemTab({ user }) {
     }),
     onSubmit: async (values) => {
       setApiError("");
+
       // Upload Image:
-      const imageURL = await uploadImage();
+      // const imageURL = await uploadImage();
       const {
         itemName,
         description,
         basePrice,
-        sizes,
         category,
-        extraIngredientPrices,
       } = values;
 
-      try {
-        const response = await axios.post("/api/menu", {
+      setMenuList([
+        ...menuList,
+        {
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4WgHKAVcjSG9IXDRbB5prngjkm8IH9dwcA&s",
+          _id: Date.now().toString(),
           name: itemName,
-          image: imageURL,
-          description,
+          description: description,
           basePrice: +basePrice,
-          category,
-          sizes,
-          extraIngredientPrices,
-        });
+          category: category,
+        },
+      ]);
 
-        if (response.status === 201) {
-          toast.success("Data has been saved successfully!");
-          setSaved(!saved);
-          formik.resetForm();
-          formik.setFieldValue("itemName", "");
-          formik.setFieldValue("description", "");
-          formik.setFieldValue("basePrice", "");
-          mutate("menuItems");
-          setMenuImage("");
-          // window.location.reload();
-        } else {
-          const errorData = response.data;
-          setApiError(errorData.message);
-        }
-      } catch (error) {
-        error?.response?.data?.message
-          ? setApiError(error.response.data.message)
-          : setApiError(
-              "An unexpected error occurred. Please try again later."
-            );
-      }
+      setSaved(!saved);
+      formik.resetForm();
+      formik.setFieldValue("itemName", "");
+      formik.setFieldValue("description", "");
+      formik.setFieldValue("basePrice", "");
+      // mutate("menuItems");
+      setMenuImage("");
+
+      // try {
+      //   const response = await axios.post("/api/menu", {
+      //     name: itemName,
+      //     image: imageURL,
+      //     description,
+      //     basePrice: +basePrice,
+      //     category,
+      //     sizes,
+      //     extraIngredientPrices,
+      //   });
+
+      //   if (response.status === 201) {
+      //     toast.success("Data has been saved successfully!");
+      //     setSaved(!saved);
+      //     formik.resetForm();
+      //     formik.setFieldValue("itemName", "");
+      //     formik.setFieldValue("description", "");
+      //     formik.setFieldValue("basePrice", "");
+      //     mutate("menuItems");
+      //     setMenuImage("");
+      //     // window.location.reload();
+      //   } else {
+      //     const errorData = response.data;
+      //     setApiError(errorData.message);
+      //   }
+      // } catch (error) {
+      //   error?.response?.data?.message
+      //     ? setApiError(error.response.data.message)
+      //     : setApiError(
+      //         "An unexpected error occurred. Please try again later."
+      //       );
+      // }
     },
   });
 
   const { status } = session;
 
-  if (status === "loading") {
-    return <Loading />;
-  }
-  if (status === "unauthenticated") {
-    return redirect("/login");
-  }
+  // if (status === "loading") {
+  //   return <Loading />;
+  // }
+  // if (status === "unauthenticated") {
+  //   return redirect("/login");
+  // }
   const userEmail = session?.data?.user?.email;
 
   return (
@@ -388,7 +447,7 @@ export default function MenuItemTab({ user }) {
               )}
             </div>
             {/* Sizes Card */}
-            <Card className="p-0">
+            {/* <Card className="p-0">
               <CardHeader
                 className="justify-center cursor-pointer hover:bg-blue-50"
                 onClick={() => setSizeDisplay(!sizeDisplay)}
@@ -433,10 +492,10 @@ export default function MenuItemTab({ user }) {
                     ))}
               </CardBody>
               <Divider />
-            </Card>
+            </Card> */}
 
             {/* ExtraIngredientPricesForm Card */}
-            <Card className="p-0">
+            {/* <Card className="p-0">
               <CardHeader
                 className="justify-center cursor-pointer hover:bg-blue-50"
                 onClick={() => setIngredientDisplay(!IngredientDisplay)}
@@ -484,9 +543,9 @@ export default function MenuItemTab({ user }) {
                     ))}
               </CardBody>
               <Divider />
-            </Card>
+            </Card> */}
             <div className="flex flex-col gap-3  md:flex-row ">
-              {Object.keys(selectedMenu).length > 0 && (
+              {Object.keys(selectedMenu).length > 0 ? (
                 <>
                   <Button
                     color="danger"
@@ -510,7 +569,7 @@ export default function MenuItemTab({ user }) {
                     Clear
                   </Button>
                 </>
-              )}
+              ) :
 
               <Button
                 color="success"
@@ -521,7 +580,7 @@ export default function MenuItemTab({ user }) {
                 disabled={formik.isSubmitting}
               >
                 Save
-              </Button>
+              </Button>}
             </div>
           </form>
         </div>
@@ -536,6 +595,7 @@ export default function MenuItemTab({ user }) {
           formik={formik}
           toast={toast}
           setMenuImage={setMenuImage}
+          menuItems={menuList} // Assuming menuList is fetched from an API or state
         />
       </section>
     </>

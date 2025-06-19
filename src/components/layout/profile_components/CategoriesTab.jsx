@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import { redirect } from "next/navigation";
@@ -34,53 +34,90 @@ export default function CategoriesTab({ user }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const [apiError, setApiError] = useState("");
-  const [saved, setSaved] = useState(false);
-  const [categorieToEdit, setCategorieToEdit] = useState({});
+  const [saved, setSaved] = useState("");
+  const [categorieToEdit, setCategoryToEdit] = useState({});
   const [categorieToDelete, setCategorieToDelete] = useState({});
 
   const { categories, error, isLoading } = useCategories();
 
-  const updateCategory = async (id) => {
-    try {
-      const response = await axios.put(`/api/category/${id}`, {
-        name: categorieToEdit.name,
-      });
+  const [categoryList, setCategoryList] = useState([]);
 
-      if (response.status === 200) {
-        toast.success("Category has been updated successfully!");
-        mutate("categories");
-        setSaved(!saved);
-        formik.resetForm();
-      } else {
-        const errorData = response.data;
-        setApiError(errorData.message);
-      }
-    } catch (error) {
-      error?.response?.data?.message
-        ? setApiError(error.response.data.message)
-        : setApiError("An unexpected error occurred. Please try again later.");
+  useEffect(() => {
+    if (categories) {
+      setCategoryList(categories);
     }
+  }, [categories]);
+
+  const updateCategory = async (id) => {
+    const localCategoryToEdit = [...categoryList];
+    localCategoryToEdit.forEach((cat) => {
+      if (cat._id === id) {
+        cat.name = categorieToEdit.name;
+      }
+    });
+    setCategoryList(localCategoryToEdit);
+    setSaved("Updated");
+    formik.resetForm();
+    // try {
+    //   const response = await axios.put(`/api/category/${id}`, {
+    //     name: categorieToEdit.name,
+    //   });
+
+    //   if (response.status === 200) {
+    //     toast.success("Category has been updated successfully!");
+    //     mutate("categories");
+    //     setSaved(!saved);
+    //     formik.resetForm();
+    //   } else {
+    //     const errorData = response.data;
+    //     setApiError(errorData.message);
+    //   }
+    // } catch (error) {
+    //   error?.response?.data?.message
+    //     ? setApiError(error.response.data.message)
+    //     : setApiError("An unexpected error occurred. Please try again later.");
+    // }
   };
 
   const deleteCategory = async (id) => {
-    try {
-      const response = await axios.delete(`/api/category/${id}`);
-
-      if (response.status === 200) {
-        toast.success("Category has been deleted successfully!");
-        mutate("categories");
-        setSaved(!saved);
-        formik.resetForm();
-      } else {
-        const errorData = response.data;
-        setApiError(errorData.message);
+    const localCategories = [...categoryList];
+    localCategories.forEach((cat, index) => {
+      if (cat._id === id) {
+        localCategories.splice(index, 1);
       }
-    } catch (error) {
-      error?.response?.data?.message
-        ? setApiError(error.response.data.message)
-        : setApiError("An unexpected error occurred. Please try again later.");
-    }
+    });
+    setCategoryList(localCategories);
+    setSaved("Deleted");
+    formik.resetForm();
+    // try {
+    //   const response = await axios.delete(`/api/category/${id}`);
+
+    //   if (response.status === 200) {
+    //     toast.success("Category has been deleted successfully!");
+    //     mutate("categories");
+    //     setSaved(!saved);
+    //     formik.resetForm();
+    //   } else {
+    //     const errorData = response.data;
+    //     setApiError(errorData.message);
+    //   }
+    // } catch (error) {
+    //   error?.response?.data?.message
+    //     ? setApiError(error.response.data.message)
+    //     : setApiError("An unexpected error occurred. Please try again later.");
+    // }
   };
+
+  useEffect(() => {
+    // Reset the saved state after a short delay to show the success message
+    if (saved) {
+      const timer = setTimeout(() => {
+        setSaved(false);
+      }, 2000); // Adjust the delay as needed
+
+      return () => clearTimeout(timer); // Cleanup the timer on unmount or when saved changes
+    }
+  }, [saved]);
 
   const formik = useFormik({
     enableReinitialize: true, //to enable reinitialization
@@ -93,38 +130,49 @@ export default function CategoriesTab({ user }) {
     onSubmit: async (values) => {
       setApiError("");
       const { category_name } = values;
-      try {
-        const response = await axios.post("/api/category", {
-          name: category_name,
-        });
-
-        if (response.status === 201) {
-          toast.success("Category has been saved successfully!");
-          mutate("categories");
-          setSaved(!saved);
-          formik.resetForm();
-        } else {
-          const errorData = response.data;
-          setApiError(errorData.message);
-        }
-      } catch (error) {
-        error?.response?.data?.message
-          ? setApiError(error.response.data.message)
-          : setApiError(
-              "An unexpected error occurred. Please try again later."
-            );
+      console.log("category_name", category_name);
+      if (!category_name.trim()) {
+        setApiError("Category name is required.");
+        return;
       }
+      setCategoryList([
+        ...categoryList,
+        { _id: Date.now(), name: category_name }, // Mocking an ID for the new category
+      ]);
+      setSaved("Added");
+      formik.resetForm();
+      // try {
+      //   // const response = await axios.post("/api/category", {
+      //   //   name: category_name,
+      //   // });
+
+      //   // if (response.status === 201) {
+      //   //   toast.success("Category has been saved successfully!");
+      //   //   mutate("categories");
+      //   //   setSaved(!saved);
+      //   //   formik.resetForm();
+      //   // } else {
+      //   //   const errorData = response.data;
+      //   //   setApiError(errorData.message);
+      //   // }
+      // } catch (error) {
+      //   error?.response?.data?.message
+      //     ? setApiError(error.response.data.message)
+      //     : setApiError(
+      //         "An unexpected error occurred. Please try again later."
+      //       );
+      // }
     },
   });
 
   const { status } = session;
 
-  if (status === "loading") {
-    return <Loading />;
-  }
-  if (status === "unauthenticated") {
-    return redirect("/login");
-  }
+  // if (status === "loading") {
+  //   return <Loading />;
+  // }
+  // if (status === "unauthenticated") {
+  //   return redirect("/login");
+  // }
   const userEmail = session?.data?.user?.email;
 
   const setVisibleEditModal = () => {
@@ -146,7 +194,7 @@ export default function CategoriesTab({ user }) {
             <p className="text-center font-bold text-xl">Categories</p>
             <Chip size="sm" variant="bordered" color="primary">
               <span className="m-1 font-extrabold text-medium">
-                {categories.length}
+                {categoryList.length}
               </span>
             </Chip>
           </div>
@@ -154,7 +202,7 @@ export default function CategoriesTab({ user }) {
       </Card>
       {saved && (
         <h2 className="mt-2 text-center bg-green-100 p-4 rounded-lg border-4 border-green-300">
-          Category saved!
+          Category {saved}!
         </h2>
       )}
 
@@ -201,7 +249,7 @@ export default function CategoriesTab({ user }) {
               className="my-10 disabled:bg-gray-500"
               disabled={formik.isSubmitting}
             >
-              Add categorie
+              Add category
             </Button>
 
             <div className="mx-auto min-w-unit-24">
@@ -211,24 +259,24 @@ export default function CategoriesTab({ user }) {
                   <TableColumn>ACTIONS</TableColumn>
                 </TableHeader>
                 <TableBody>
-                  {categories.map((cat) => (
+                  {categoryList.map((cat) => (
                     <TableRow key={cat._id}>
                       <TableCell>
                         <>{cat.name}</>
                       </TableCell>
                       <TableCell className="flex gap-8">
-                        <Tooltip content="Edit categorie">
+                        <Tooltip content="Edit category">
                           <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                             <EditIcon
                               onClick={() => {
                                 setVisibleEditModal();
-                                setCategorieToEdit(cat);
+                                setCategoryToEdit(cat);
                               }}
                             />
                           </span>
                         </Tooltip>
 
-                        <Tooltip color="danger" content="Delete categorie">
+                        <Tooltip color="danger" content="Delete category">
                           <span className="text-lg text-danger cursor-pointer active:opacity-50">
                             <DeleteIcon
                               onClick={() => {
@@ -246,7 +294,7 @@ export default function CategoriesTab({ user }) {
 
               <Modal
                 className=" mt-44"
-                title="Edit categorie"
+                title="Edit category"
                 open={openEditModal}
                 onOk={() => {
                   setOpenEditModal(!openEditModal);
@@ -265,7 +313,7 @@ export default function CategoriesTab({ user }) {
                     type="text"
                     value={categorieToEdit.name}
                     onChange={(e) =>
-                      setCategorieToEdit({
+                      setCategoryToEdit({
                         ...categorieToEdit,
                         name: e.target.value,
                       })
@@ -276,7 +324,7 @@ export default function CategoriesTab({ user }) {
 
               <Modal
                 className=" mt-44"
-                title="Delete categorie"
+                title="Delete category"
                 open={openDeleteModal}
                 onOk={() => {
                   deleteCategory(categorieToDelete._id);
@@ -291,7 +339,7 @@ export default function CategoriesTab({ user }) {
                 onCancel={setVisibleDeleteModal}
               >
                 <div>
-                  <p>Are you sure to delete this categorie?</p>
+                  <p>Are you sure to delete this category?</p>
                 </div>
               </Modal>
             </div>

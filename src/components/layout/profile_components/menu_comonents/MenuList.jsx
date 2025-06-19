@@ -15,12 +15,12 @@ export default function MenuList({
   toast,
   setEnable,
   setMenuImage,
+  menuItems
 }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { menuItems, error, isLoading } = useMenuItems();
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
   const setVisibleDeleteModal = () => {
     setOpenDeleteModal(!openDeleteModal);

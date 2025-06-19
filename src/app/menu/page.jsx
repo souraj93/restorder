@@ -95,7 +95,7 @@ export default function Menu() {
 
   return (
     <>
-      <div className="flex mb-4 overflow-x-auto scrollbar-hide px-4">
+      <div className="flex mb-4 overflow-x-auto scrollbar-hide px-2">
         <select className="border rounded px-4 py-2" onChange={handleScroll}>
           <option value="">Menu</option>
           {categories?.map((c) => (
@@ -129,7 +129,7 @@ export default function Menu() {
                 <div className="px-4">
                   <SectionHeaders mainHeader={c.name} />
                 </div>
-                <div className="grid grid-cols-2 gap-4 my-4 px-4">
+                <div className="grid grid-cols-2 gap-4 my-4 px-2">
                   {menuData
                     ?.filter((item) => item?.category?._id === c._id)
                     .map((item) => (

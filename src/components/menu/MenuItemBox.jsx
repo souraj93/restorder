@@ -5,13 +5,13 @@ import PlusMinus from "@/components/ui/PlusMinus";
 export default function MenuItemBox({ menuItem, handleAddToCard }) {
   const { name, description, image, basePrice, inCartCount } = menuItem;
   return (
-    <div className="mx-auto  w-full p-4 rounded-lg flex flex-col bg-white shadow-[0_0px_5px_rgba(0,0,0,0.25)] hover:shadow-black/25 transition-all">
+    <div className="mx-auto  w-full p-2 rounded-lg flex flex-col bg-white shadow-[0_0px_5px_rgba(0,0,0,0.25)] hover:shadow-black/25 transition-all">
       <div className="h-36 w-full relative">
         <Image src={image} layout={"fill"} alt={""} className="rounded-lg" />
       </div>
 
       <h4 className="font-semibold my-2 text-sm">{name}</h4>
-      <p className="text-gray-500 text-sm line-clamp-3">{description}</p>
+      <p className="text-gray-500 text-sm line-clamp-3 mb-2">{description}</p>
       {/* <FlyingButton targetTop={"5%"} targetLeft={"95%"} src={image}> */}
       {inCartCount > 0 ?
       <div className="flex justify-between items-center">
