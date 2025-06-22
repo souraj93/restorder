@@ -15,7 +15,7 @@ export const mockMenuItems = [
     basePrice: 499,
     isNonVeg: true,
     category: { _id: "1", name: "Thali" },
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4WgHKAVcjSG9IXDRbB5prngjkm8IH9dwcA&s",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Kolkata_mutton_biryani.jpg/1200px-Kolkata_mutton_biryani.jpg",
   },
   {
     _id: "3",

@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
         className={`${roboto.className} ${poppins.variable} ${lemon.variable}`}
       >
         <SessionProvider session={{}}>
-          <main className="max-w-4xl border mx-auto py-4 px-2">
+          <main className="max-w-4xl border mx-auto py-4 px-2 bg-[#0d0d0d] text-white">
             <Providers>
               <Header />
               {children}

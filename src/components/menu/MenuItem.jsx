@@ -104,46 +104,6 @@ export default function MenuItem(menuItem) {
               <p className="text-center text-gray-500 text-sm mb-2">
                 {description}
               </p>
-              {sizes?.length > 0 && (
-                <div className="py-2">
-                  <h3 className="text-center text-gray-700">Pick your size</h3>
-                  {sizes.map((size) => (
-                    <label
-                      key={size._id}
-                      className="flex items-center gap-2 p-4 border rounded-md mb-1"
-                    >
-                      <input
-                        type="radio"
-                        onChange={() => setSelectedSize(size)}
-                        checked={selectedSize?.name === size.name}
-                        name="size"
-                      />
-                      {size.name} ${basePrice + size.price}
-                    </label>
-                  ))}
-                </div>
-              )}
-              {extraIngredientPrices?.length > 0 && (
-                <div className="py-2">
-                  <h3 className="text-center text-gray-700">Any extras?</h3>
-                  {extraIngredientPrices.map((extraThing) => (
-                    <label
-                      key={extraThing._id}
-                      className="flex items-center gap-2 p-4 border rounded-md mb-1"
-                    >
-                      <input
-                        type="checkbox"
-                        onChange={(ev) => handleExtraThingClick(ev, extraThing)}
-                        checked={selectedExtras
-                          .map((e) => e._id)
-                          .includes(extraThing._id)}
-                        name={extraThing.name}
-                      />
-                      {extraThing.name} +${extraThing.price}
-                    </label>
-                  ))}
-                </div>
-              )}
               <div className="flex justify-around items-center">
                 {/* <FlyingButton targetTop={"5%"} targetLeft={"95%"} src={image}> */}
                 <button
