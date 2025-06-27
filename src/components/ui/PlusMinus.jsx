@@ -1,12 +1,13 @@
 "use client";
 
-export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVertical = false }) {
+export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVertical = false, classes }) {
   return (
     !isVertical ?
     <div className="flex items-center justify-center gap-2">
       <button
         className="bg-red-500 text-xl rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           // Remove one item from cart
           handleAddToCard(menuItem, -1);
         }}
@@ -17,7 +18,8 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
       <span className="text-md font-bold w-4 text-center">{inCartCount}</span>
       <button
         className="bg-red-500 text-xl rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           // Add one more item to cart
           handleAddToCard(menuItem, 1);
         }}
@@ -26,7 +28,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
         +
       </button>
     </div> : 
-    <div className="absolute right-0 bg-black/50 text-center p-2" 
+    <div className={`absolute right-0 bg-black/50 text-center p-2 ${classes}`} 
         style={{
           top: '-45px'
         }}
@@ -36,7 +38,8 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
         style={{
           padding: "0 8px"
         }}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           // Remove one item from cart
           handleAddToCard(menuItem, -1);
         }}
@@ -50,7 +53,8 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
         style={{
           padding: "0 6px"
         }}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           // Add one more item to cart
           handleAddToCard(menuItem, 1);
         }}

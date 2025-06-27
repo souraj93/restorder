@@ -6,7 +6,11 @@ import Error from "@/app/error";
 import { useCategories } from "@/Hooks/useCategories";
 import { useMenuItems } from "@/Hooks/useMenuItems";
 import { useEffect, useState } from "react";
+import { BiSort } from "react-icons/bi";
+import { useRouter } from "next/navigation";
+
 export default function Menu() {
+  const router = useRouter();
   const {
     categories,
     error: catError,
@@ -19,6 +23,9 @@ export default function Menu() {
   } = useMenuItems();
 
   const [menuData, setMenuData] = useState([]);
+  const [displayMenu, toggleMenu] = useState(false);
+  const [displaySort, toggleSortDropdown] = useState(false);
+  const [isCategoryDisplayed, toggleCategory] = useState(true);
 
   useEffect(() => {
     if (menuItems) {
@@ -29,37 +36,37 @@ export default function Menu() {
   const [filters, setFilters] = useState([{
     label: 'Veg',
     selected: false,
-    color: 'bg-green-100 text-green-700',
-    selectedColor: 'bg-green-500 text-white'
+    color: 'bg-[#47465c]',
+    selectedColor: 'bg-red-500'
   }, {
     label: 'Non-Veg',
     selected: false,
-    color: 'bg-red-100 text-red-700',
-    selectedColor: 'bg-red-500 text-white'
+    color: 'bg-[#47465c]',
+    selectedColor: 'bg-red-500'
   }, {
     label: 'Spicy',
     selected: false,
-    color: 'bg-yellow-100 text-yellow-700',
-    selectedColor: 'bg-yellow-500 text-white'
+    color: 'bg-[#47465c]',
+    selectedColor: 'bg-red-500'
   }]);
+
+  const [sortOptions,updateSortOptions] = useState([{
+    label: "Price: Low to High",
+    selected: false
+  },{
+    label: "Price: High to Low",
+    selected: false
+  }, 
+  // {
+  //   label: "Rating: Low to High",
+  //   selected: false
+  // }
+  ]);
 
   if (catIsLoading || MenuIsLoading) return <Loading />;
 
-  const handleScroll = (e) => {
-    const sectionId = e.target.value;
-    const section = document.getElementById(sectionId);
-    const container = document.getElementById('scrollContainer');
-
-    if (section) {
-      container.scrollTo({
-        top: section.offsetTop - 200,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   const filterMenuItems = (filterLabel) => {
-    
+
     const isSelected = filters.find(f => f.label === filterLabel).selected;
     const selectedFilters = filters.filter(f => f.selected).map(f => f.label);
 
@@ -77,38 +84,77 @@ export default function Menu() {
     if (selectedFilters.length) {
       filteredItems = menuItems.map(item => {
         if ((selectedFilters.includes('Veg') && item.isVeg) ||
-      (selectedFilters.includes('Non-Veg') && item.isNonVeg) ||
-      (selectedFilters.includes('Spicy') && item.isSpicy)) {
+          (selectedFilters.includes('Non-Veg') && item.isNonVeg) ||
+          (selectedFilters.includes('Spicy') && item.isSpicy)) {
           return item; // Exclude non-veg items
         }
       }).filter(each => each !== undefined);
     } else {
       filteredItems = menuItems; // If no filters are selected, show all items
     }
-    
-    
-
-    // Update the menuItems state with the filtered items
-    // Assuming you have a way to set the menuItems state
     setMenuData(filteredItems);
-  }
+  };
+
+  const sortMenuItems = (index) => {
+    const localSortOptions = [...sortOptions];
+
+    if (!sortOptions[index].selected) {
+      toggleCategory(false);
+      switch(index) {
+      case 0:
+        setMenuData([...menuData].sort((a, b) => a.basePrice - b.basePrice));
+        break;
+      case 1:
+        setMenuData([...menuData].sort((a, b) => b.basePrice - a.basePrice));
+        break;
+        // default:
+        //   setMenuData([...menuData].sort((a, b) => b.basePrice - a.basePrice));
+        //   break;
+      }
+    } else {
+      toggleCategory(true);
+    }
+    localSortOptions.forEach((each, ind) => {
+      if (index !== ind) {
+        each.selected = false;
+      }
+    });
+    localSortOptions[index].selected = !localSortOptions[index].selected;
+    updateSortOptions([...localSortOptions]);
+
+  };
 
   return (
-    <>
-      <div className="flex mb-4 overflow-x-auto scrollbar-hide px-2">
-        <select className="border rounded px-4 py-2" onChange={handleScroll}>
-          <option value="">Menu</option>
-          {categories?.map((c) => (
-            <option key={c._id} value={c._id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-        <div className="flex items-center ml-4 space-x-2">
+    <div className="h-full relative">
+      <div className="flex mb-2 overflow-x-auto scrollbar-hide px-2">
+        <BiSort fontSize={26} color={!sortOptions.some(each => each.selected) ? "#ffffff" : "#ef4444"} className="cursor-pointer" onClick={() => toggleSortDropdown(!displaySort)} />
+        {displaySort && (
+          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 z-50 flex items-start justify-end">
+          <ul className="absolute z-10 mt-10 left-10 text-white
+           rounded-lg shadow-lg">
+            {sortOptions.map((each, index) => {
+              return <li key={each.label} 
+              className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${each.selected ? 'bg-red-500' : 'bg-[#47465c]'}`}
+              onClick={() => {
+                sortMenuItems(index);
+                toggleSortDropdown(false);
+              }}
+              >{each.label}</li>
+            })}
+          </ul>
+          <div
+            className="flex-1 h-full"
+            onClick={() => toggleSortDropdown(false)}
+            tabIndex={-1}
+            aria-label="Close category menu"
+          />
+          </div>
+        )}
+        <div className="flex items-center space-x-2 ml-2">
           {filters.map((filter) => (
             <button
               key={filter.label}
-              className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max font-semibold`}
+              className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max text-white`}
               onClick={() => {
                 setFilters(filters.map(f =>
                   f.label === filter.label ? { ...f, selected: !f.selected } : f
@@ -122,24 +168,78 @@ export default function Menu() {
         </div>
       </div>
 
-      <div id="scrollContainer"  className="scrollbar-hide" style={{ height: '100vh', overflowY: 'scroll' }}>
-        {menuData.length && categories?.length > 0 ?
+      <div id="scrollContainer" className="scrollbar-hide relative" style={{ height: '100vh', overflowY: 'scroll' }}>
+        {isCategoryDisplayed && menuData.length && categories?.length > 0 ?
           categories.map((c) => (
             <section className="mt-2" id={c._id} key={c._id}>
-                <div className="px-4">
-                  <SectionHeaders mainHeader={c.name} />
-                </div>
-                <div className="grid grid-cols-2 gap-4 my-4 px-2">
-                  {menuData
-                    ?.filter((item) => item?.category?._id === c._id)
-                    .map((item) => (
-                      <MenuItem key={item._id} {...item} />
-                    ))}
-                </div>
+              <div className="px-2">
+                <SectionHeaders mainHeader={c.name} />
+              </div>
+              <div className="grid grid-cols-2 gap-4 my-2 px-2 cursor-pointer" onClick={() => router.push('/details')}>
+                {menuData
+                  ?.filter((item) => item?.category?._id === c._id)
+                  .map((item) => (
+                    <MenuItem key={item._id} {...item} />
+                  ))}
+              </div>
             </section>
           )) : null}
+          {!isCategoryDisplayed && menuData.length ? 
+            <section className="mt-2">
+              <div className="grid grid-cols-2 gap-4 my-2 px-2 cursor-pointer" onClick={() => router.push('/details')}>
+                {menuData
+                  .map((item) => (
+                    <MenuItem key={item._id} {...item} />
+                  ))}
+              </div>
+            </section>
+          : null}
       </div>
-
-    </>
+      {displayMenu && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 z-50 flex items-start justify-end">
+          <div className="bg-[#47465c] rounded-lg shadow-lg mt-0 mr-0 w-64 max-h-48 overflow-y-auto absolute bottom-24 right-8">
+            <ul className="divide-y">
+              {categories?.map((c) => (
+                <li
+                  key={c._id}
+                  className="px-4 py-3 cursor-pointer hover:bg-[#0d0d0d] transition"
+                  onClick={() => {
+                    const section = document.getElementById(c._id);
+                    const container = document.getElementById('scrollContainer');
+                    if (section && container) {
+                      container.scrollTo({
+                        top: section.offsetTop - 200,
+                        behavior: 'smooth'
+                      });
+                    }
+                    toggleMenu(false);
+                  }}
+                >
+                  {c.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div
+            className="flex-1 h-full"
+            onClick={() => toggleMenu(false)}
+            tabIndex={-1}
+            aria-label="Close category menu"
+          />
+        </div>
+      )}
+      {isCategoryDisplayed ?
+      <button
+        className="fixed bottom-6 right-6 w-16 h-16 rounded-full bg-red-500 text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
+        onClick={() => toggleMenu(!displayMenu)}
+        style={{
+          boxShadow: "0px 4px 4px 2px rgba(239,68,68,0.75)",
+          "-webkit-box-shadow": "0px 4px 2px 3px rgba(239,68,68,0.75)",
+          "-moz-box-shadow": "0px 4px 2px 3px rgba(239,68,68,0.75)"
+        }}
+      >
+        Menu
+      </button> : null}
+    </div>
   );
 }

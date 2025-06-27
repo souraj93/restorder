@@ -45,6 +45,17 @@ nav header {
   height: auto !important;
 }
 
+.menu-details .details {
+    border-radius: 25px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    z-index: 99;
+    position: absolute;
+    top: 19rem;
+    left: 0;
+    height: calc(100% - 19rem);
+}
+
 @tailwind components;
 @tailwind utilities;
 

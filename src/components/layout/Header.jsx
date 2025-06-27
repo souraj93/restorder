@@ -8,10 +8,12 @@ import {
   NavbarContent
 } from "@nextui-org/react";
 import Buttons from "@/components/ui/Buttons";
+import { usePathname } from "next/navigation";
 import { useCartProductsStore } from "@/store/CartProductStore";
 import ShoppingCart from "@/components/icons/ShoppingCart";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
   const [count, setCount] = useState(0);
   const menuItems = [
     { title: "Home", href: "/" },
@@ -26,12 +28,13 @@ export default function Header() {
   }, [cartProducts]);
 
   return (
-    <header className="flex items-center justify-between font-poppins font-xl bg-[#0d0d0d] mb-2">
+    !pathname?.includes('/details') ?
+    <header className="flex items-center justify-between font-poppins font-xl bg-[#0d0d0d] py-4 pl-2 pr-4">
       <Navbar onMenuOpenChange={setIsMenuOpen}>
         <NavbarContent>
           <NavbarBrand>
             <Link
-              className="text-white font-semibold text-lg"
+              className="text-white font-semibold text-xl"
               href="/menu"
             >
               Cook My Food
@@ -48,6 +51,6 @@ export default function Header() {
           )}
         </Link>
       </Navbar>
-    </header>
+    </header> : null
   );
 }
