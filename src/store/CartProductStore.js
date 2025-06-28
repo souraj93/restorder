@@ -67,6 +67,32 @@ export const useCartProductsStore = create(
               }
               return { cartProducts: updatedCartProducts };
             }
+          } else {
+            // Check if the product already exists in the cart
+            const existingProductIndex = state.cartProducts.findIndex(
+              (p) =>
+                p._id === product._id
+            );
+
+            if (existingProductIndex !== -1) {
+              // If it exists, increment the quantity
+              const updatedCartProducts = [...state.cartProducts];
+              updatedCartProducts[existingProductIndex].inCartCount = isInc;
+              return { cartProducts: updatedCartProducts };
+            }
+            // If it doesn't exist, add a new product to the cart
+            return {
+              cartProducts: [
+                ...state.cartProducts,
+                {
+                  ...product,
+                  // size: selectedSize,
+                  // extras: selectedExtras,
+                  inCartCount: isInc,
+                  product_price: calctPrice(product),
+                },
+              ],
+            };
           }
         }),
 

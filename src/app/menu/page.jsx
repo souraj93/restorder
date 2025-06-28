@@ -234,8 +234,8 @@ export default function Menu() {
         onClick={() => toggleMenu(!displayMenu)}
         style={{
           boxShadow: "0px 4px 4px 2px rgba(239,68,68,0.75)",
-          "-webkit-box-shadow": "0px 4px 2px 3px rgba(239,68,68,0.75)",
-          "-moz-box-shadow": "0px 4px 2px 3px rgba(239,68,68,0.75)"
+          "-webkit-box-shadow": "0px 4px 4px 2px rgba(239,68,68,0.75)",
+          "-moz-box-shadow": "0px 4px 4px 2px rgba(239,68,68,0.75)"
         }}
       >
         Menu

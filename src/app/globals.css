@@ -17,7 +17,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #008000;
+  background-color: #47465c;
   border-radius: 14px;
   border: 1px var(--primary);
   -webkit-border-radius: 14px;
@@ -54,6 +54,7 @@ nav header {
     top: 19rem;
     left: 0;
     height: calc(100% - 19rem);
+    width: 100%;
 }
 
 @tailwind components;
