@@ -42,11 +42,11 @@ export default function CartPage() {
   }
 
   return (
-    <section className="">
+    <section className="h-screen">
       <div className="text-center">
         <SectionHeaders mainHeader="Cart" />
       </div>
-      <div className="flex gap-2 justify-between flex-col mt-8 md:flex-row">
+      <div className="flex gap-2 justify-between flex-col mt-4 md:flex-row">
         <ProductsList
           cartProductsClient={cartProductsClient}
           subtotal={subtotal}

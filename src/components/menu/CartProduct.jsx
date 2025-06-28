@@ -5,7 +5,6 @@ import Image from "next/image";
 import PlusMinus from "@/components/ui/PlusMinus";
 
 export default function CartProduct({ product, onRemove }) {
-  console.log("CartProduct", product);
   const addToCart = useCartProductsStore((state) => state.addToCart);
 
 
@@ -14,21 +13,28 @@ export default function CartProduct({ product, onRemove }) {
   };
 
   return (
-    <div className="border-b py-4 px-2 hover:bg-green-50 duration-150 ease-in-out">
-      <div className="flex justify-between gap-4">
-        <div className="w-24">
+    <div className=" py-1 px-2 bg-[#47465c] rounded-lg mb-2">
+      <div className="flex justify-between items-center gap-4">
+        <div className="w-20">
           <Image width={240} height={240} src={product.image} alt={""} />
         </div>
         <div className="grow">
-          <h3 className="font-semibold">{product.name}</h3>
-          <div className="flex justify-between gap-4 mt-2">
-            <div className="text-sm font-semibold text-green-900 mt-2">
-              Rs {(product.product_price * product.inCartCount).toFixed(2)}
+
+          <div className="flex justify-between items-center gap-4">
+            <div>
+              <h3 className="text-xs">{product.name}</h3>
+
+              <div className="text-xs text-white font-semibold mt-1">
+                ₹{(product.basePrice * product.inCartCount).toFixed(2)}
+              </div>
             </div>
             <PlusMinus
               menuItem={product}
               handleAddToCard={handleAddToCard}
               inCartCount={product.inCartCount}
+              isVertical={true}
+              classes={'relative top-0 p-1'}
+              buttonClasses={'text-sm'}
             />
             {/* {!!onRemove && (
             <div>
@@ -38,7 +44,7 @@ export default function CartProduct({ product, onRemove }) {
             </div>
           )} */}
           </div>
-          
+
 
         </div>
       </div>

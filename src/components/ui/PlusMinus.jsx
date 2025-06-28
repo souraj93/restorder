@@ -28,15 +28,15 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
         +
       </button>
     </div> : 
-    <div className={`absolute right-0 bg-black/50 text-center rounded-lg p-2 ${classes}`} 
+    <div className={`absolute right-0 bg-black/50 text-center rounded-lg ${classes && classes.includes('p-') ? classes : `p-2 ${classes}`}`} 
         style={{
-          top: '-45px'
+          top: `${classes && classes.includes('top') ? '' : '-45px'}`
         }}
     >
       <button
         className={`bg-red-500 text-sm rounded-full flex items-center justify-center hover:bg-red-700 ${buttonClasses}`}
         style={{
-          padding: `0 ${buttonClasses ? '11px' : '8px'}`
+          padding: `0 ${buttonClasses && !buttonClasses.includes('text-sm') ? '11px' : '8px'}`
         }}
         onClick={(e) => {
           e.stopPropagation();
@@ -51,7 +51,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
       <button
         className={`bg-red-500 text-sm rounded-full flex items-center justify-center hover:bg-red-700 ${buttonClasses}`}
         style={{
-          padding: `0 ${buttonClasses ? '8px' : '6px'}`
+          padding: `0 ${buttonClasses && !buttonClasses.includes('text-sm') ? '8px' : '6px'}`
         }}
         onClick={(e) => {
           e.stopPropagation();

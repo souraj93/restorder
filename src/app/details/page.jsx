@@ -18,13 +18,15 @@ const menuItem = {
   images: [
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4WgHKAVcjSG9IXDRbB5prngjkm8IH9dwcA&s',
     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Kolkata_mutton_biryani.jpg/1200px-Kolkata_mutton_biryani.jpg'
-  ]
+  ],
+  likedBy: 5
 };
 
 export default function MenuDetailsPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [menuData, setMenuData] = useState(menuItem);
   const [menuCount,updateMenuCount] = useState(1);
+  // const [isLiked, likeMenu] = useState(false);
   const router = useRouter();
 
   const [filters, setFilters] = useState([{
@@ -91,6 +93,31 @@ export default function MenuDetailsPage() {
 
   return (
     <div className="max-w-md mx-auto h-screen menu-details bg-[#47465c]">
+      <div className='flex justify-between'>
+      <button
+        className="absolute top-4 left-4 z-20 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
+        onClick={() => router.back()}
+        aria-label="Go back"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 text-black">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      {/* <button
+        className="absolute top-4 right-4 z-20 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
+        aria-label="Like"
+        onClick={() => likeMenu(!isLiked)}
+      >
+        {isLiked ?
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 text-red-500">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg> :
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 text-red-500">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>}
+      </button> */}
+      </div>
       <Card className="rounded-2xl shadow-lg overflow-hidden bg-[#47465c] h-screen">
         <Carousel className="w-full h-80">
           {menuItem.images.map((img, index) => (
@@ -139,7 +166,7 @@ export default function MenuDetailsPage() {
             ))}
           </div>
           
-          <p className="text-[#9898a4] text-lg overflow-y-auto border rounded-lg py-2 px-4" style={{
+          <p className="text-white text-md overflow-y-auto border rounded-lg py-2 px-4" style={{
             marginTop: "20px",
             maxHeight: "160px"
           }} dangerouslySetInnerHTML={

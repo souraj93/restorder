@@ -8,7 +8,7 @@ export default function ProductsList({
   deletedFromCart,
 }) {
   return (
-    <div className="border flex-grow">
+    <div className="flex-grow px-4">
       {cartProductsClient?.length === 0 && (
         <div>No products in your shopping cart</div>
       )}
@@ -20,20 +20,13 @@ export default function ProductsList({
             onRemove={!!deletedFromCart && (() => deletedFromCart(index))}
           />
         ))}
-      <div className="py-2 px-2 flex justify-end items-center">
-        <div className="text-gray-500">
-          {/* Subtotal:
-          <br />
-          Delivery:
-          <br /> */}
-          Total:
+      <div className="py-2 px-2 flex justify-between items-center">
+        <div>
+          <div className="font-semibold pl-2 text-right">
+            <span className="text-gray-500">Total: </span>₹{(subtotal).toFixed(2)}
+          </div>
         </div>
-        <div className="font-semibold pl-2 text-right">
-          Rs {(subtotal).toFixed(2)}
-          {/* <br />
-          $5
-          <br />${subtotal + 5} */}
-        </div>
+
       </div>
       <div className="p-2">
         <Card shadow="lg" disableAnimation="true" className="bg-green-50">
