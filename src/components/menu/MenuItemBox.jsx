@@ -30,7 +30,7 @@ export default function MenuItemBox({ menuItem, handleAddToCard }) {
               }}
             >{name}</h4>
             <span className="font-semibold text-xs">
-              Rs {basePrice.toFixed(2)}
+              ₹{basePrice.toFixed(2)}
             </span>
           </div>
           <div className="">
