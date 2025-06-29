@@ -36,17 +36,17 @@ export default function Menu() {
   const [filters, setFilters] = useState([{
     label: 'Veg',
     selected: false,
-    color: 'bg-[#47465c]',
+    color: 'bg-[#2f2e33]',
     selectedColor: 'bg-red-500'
   }, {
     label: 'Non-Veg',
     selected: false,
-    color: 'bg-[#47465c]',
+    color: 'bg-[#2f2e33]',
     selectedColor: 'bg-red-500'
   }, {
     label: 'Spicy',
     selected: false,
-    color: 'bg-[#47465c]',
+    color: 'bg-[#2f2e33]',
     selectedColor: 'bg-red-500'
   }]);
 

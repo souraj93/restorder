@@ -22,7 +22,7 @@ export default function ProductsList({
             />
           ))}
         <h4 className="text-white mb-2">Billing Summary</h4>
-        <div className="py-2 px-2 text-xs bg-[#47465c] rounded-lg">
+        <div className="py-2 px-2 text-xs bg-[#2f2e33] rounded-lg">
           <div className="w-full flex justify-between mb-2">
             <span>Subtotal: </span><span>₹{(subtotal).toFixed(2)}</span>
           </div>

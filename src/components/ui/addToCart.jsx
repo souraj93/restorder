@@ -6,7 +6,6 @@ export function AddToCart(props) {
   const { inCartCount, menuItem, handleAddToCard, classes, buttonClasses } = props;
   return <>
     {inCartCount > 0 ?
-      <div className="">
         <PlusMinus
           menuItem={menuItem}
           handleAddToCard={handleAddToCard}
@@ -14,8 +13,7 @@ export function AddToCart(props) {
           isVertical={true}
           classes={classes}
           buttonClasses={buttonClasses}
-        />
-      </div> :
+        /> :
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -23,7 +21,8 @@ export function AddToCart(props) {
         }}
         className={`bg-red-500 text-white text-md rounded-full absolute right-1 -top-4 ${classes} ${buttonClasses}`}
         style={{
-          padding: `0 ${buttonClasses ? '8px' : '7px'}`
+          padding: `0 ${buttonClasses ? '8px' : '7px'}`,
+          top: classes && classes.includes('top-[290px]') ? '290px' : ''
         }}
       >
         +

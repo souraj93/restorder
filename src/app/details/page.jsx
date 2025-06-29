@@ -26,7 +26,7 @@ const menuItem = {
 export default function MenuDetailsPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [menuData, setMenuData] = useState(menuItem);
-  const [menuCount,updateMenuCount] = useState(1);
+  const [menuCount, updateMenuCount] = useState(1);
   // const [isLiked, likeMenu] = useState(false);
   const router = useRouter();
 
@@ -81,7 +81,7 @@ export default function MenuDetailsPage() {
     return text.replaceAll('\n', '<br />');
   };
 
-  const manageCart = (item, count) =>{
+  const manageCart = (item, count) => {
     updateMenuCount(prevCount => {
       if (count === 1) {
         return prevCount + 1;
@@ -93,10 +93,10 @@ export default function MenuDetailsPage() {
 
 
   return (
-    <div className="max-w-md mx-auto h-screen menu-details bg-[#47465c] scrollbar-hide">
+    <div className="max-w-md mx-auto h-screen menu-details bg-[#2f2e33] scrollbar-hide">
       <div className='flex justify-between'>
-      <BackButton />
-      {/* <button
+        <BackButton />
+        {/* <button
         className="absolute top-4 right-4 z-20 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
         aria-label="Like"
         onClick={() => likeMenu(!isLiked)}
@@ -111,7 +111,7 @@ export default function MenuDetailsPage() {
         </svg>}
       </button> */}
       </div>
-      <Card className="rounded-2xl shadow-lg overflow-hidden bg-[#47465c] h-screen">
+      <Card className="rounded-2xl shadow-lg overflow-hidden bg-[#2f2e33] h-screen relative">
         <Carousel className="w-full h-80">
           {menuItem.images.map((img, index) => (
             <CarouselItem key={index} active={index === currentImageIndex}>
@@ -119,31 +119,32 @@ export default function MenuDetailsPage() {
             </CarouselItem>
           ))}
         </Carousel>
-        <CardContent className="p-4 space-y-2 bg-[#47465c] details">
-          <AddToCart
+        <AddToCart
             menuItem={menuItem}
             handleAddToCard={manageCart}
             inCartCount={menuCount}
-            classes={"right-12"}
+            classes={`right-12 z-[100] top-[${menuCount ? '250' : '290'}px] p-1`}
             buttonClasses={`text-xl`}
           />
+        <CardContent className="p-4 space-y-2 bg-[#2f2e33] details overflow-y-auto pb-[160px] scrollbar-hide">
+          
           <h2 className="text-xl font-semibold">{menuItem.name}</h2>
 
           <div className='flex justify-between' style={{
-              margin: "15px 0 25px"
-            }}>
+            margin: "15px 0 25px"
+          }}>
             <div>
               <span className="text-xs rounded-full px-4 py-2 border mr-2">Total Order: 50</span>
               <span className="text-xs rounded-full px-4 py-2 border">Veg</span>
             </div>
             <div className="flex items-center space-x-1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="#FFD700" viewBox="0 0 20 20" className="w-5 h-5">
-                <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/>
+                <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z" />
               </svg>
               <span className="text-yellow-400 font-semibold text-md">4.5</span>
             </div>
           </div>
-          
+
 
           <div className="flex justify-center space-x-2 border-t-1 pt-4">
             {filters.map((filter, index) => (
@@ -158,29 +159,29 @@ export default function MenuDetailsPage() {
               </button>
             ))}
           </div>
-          
-          <p className="text-white text-md overflow-y-auto border rounded-lg py-2 px-4" style={{
-            marginTop: "20px",
-            maxHeight: "160px"
-          }} dangerouslySetInnerHTML={
+
+          <p className="text-white text-sm overflow-y-auto border rounded-lg py-2 px-4" dangerouslySetInnerHTML={
             { __html: filters[0].selected ? menuItem.description : convertToHtml(menuItem.ingredients) }
           }></p>
-          <div className='fixed bottom-0 left-0 w-full p-4 bg-[#47465c] border-t-1'>
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-bold">₹{menuItem.basePrice}</span>
-              {menuCount ? <button className="rounded-xl px-6 py-3 bg-red-500 text-white" onClick={()=> {
-                if (menuData.inCartCount !== menuCount) {
-                  addToCart(menuItem,menuCount);
-                }
-                router.push('/menu');
-              }
-                }>
-                Add Item {menuCount ? `| ₹${menuItem.basePrice*menuCount}` : ""}
-              </button> : null}
-            </div>
-          </div>
         </CardContent>
+        <div className='fixed bottom-0 left-0 w-full p-4 bg-[#2f2e33] border-t-1' style={{
+          zIndex: 99
+        }}>
+          <div className="flex items-center justify-between">
+            <span className="text-lg font-bold">₹{menuItem.basePrice}</span>
+            {menuCount ? <button className="rounded-xl px-6 py-3 bg-red-500 text-white" onClick={() => {
+              if (menuData.inCartCount !== menuCount) {
+                addToCart(menuItem, menuCount);
+              }
+              router.push('/menu');
+            }
+            }>
+              Add Item {menuCount ? `| ₹${menuItem.basePrice * menuCount}` : ""}
+            </button> : null}
+          </div>
+        </div>
       </Card>
+
     </div>
   );
 }
