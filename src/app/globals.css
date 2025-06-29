@@ -26,6 +26,10 @@
   -o-border-radius: 14px;
 }
 
+body {
+  overflow: hidden;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

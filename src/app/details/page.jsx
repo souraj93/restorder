@@ -8,6 +8,7 @@ import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { useCartProductsStore } from '@/store/CartProductStore';
 import { AddToCart } from '@/components/ui/addToCart';
 import { useRouter } from 'next/navigation';
+import BackButton from '@/components/ui/backButton';
 
 const menuItem = {
   _id: "1",
@@ -92,17 +93,9 @@ export default function MenuDetailsPage() {
 
 
   return (
-    <div className="max-w-md mx-auto h-screen menu-details bg-[#47465c]">
+    <div className="max-w-md mx-auto h-screen menu-details bg-[#47465c] scrollbar-hide">
       <div className='flex justify-between'>
-      <button
-        className="absolute top-4 left-4 z-20 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
-        onClick={() => router.back()}
-        aria-label="Go back"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 text-black">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
+      <BackButton />
       {/* <button
         className="absolute top-4 right-4 z-20 bg-white bg-opacity-70 rounded-full p-2 shadow-md"
         aria-label="Like"

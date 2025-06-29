@@ -7,6 +7,7 @@ import { useCartProductsStore } from "@/store/CartProductStore";
 import { useUserStore } from "@/store/UserStore";
 import toast from "react-hot-toast";
 import ProductsList from "@/components/layout/cart-components/ProductsList";
+import BackButton from "@/components/ui/backButton";
 
 export default function CartPage() {
   const [cartProductsClient, setCartProductsClient] = useState([]);
@@ -34,17 +35,19 @@ export default function CartPage() {
 
   if (cartProductsClient?.length === 0) {
     return (
-      <section className="mt-8 text-center">
+      <section className="mt-4 text-center h-screen">
         <SectionHeaders mainHeader="Cart" />
+        <BackButton />
         <p className="mt-4">Your shopping cart is empty 😔</p>
       </section>
     );
   }
 
   return (
-    <section className="h-screen">
+    <section className="h-screen mt-4">
       <div className="text-center">
         <SectionHeaders mainHeader="Cart" />
+        <BackButton />
       </div>
       <div className="flex gap-2 justify-between flex-col mt-4 md:flex-row">
         <ProductsList

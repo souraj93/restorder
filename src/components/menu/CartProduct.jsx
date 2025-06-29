@@ -16,7 +16,7 @@ export default function CartProduct({ product, onRemove }) {
     <div className=" py-1 px-2 bg-[#47465c] rounded-lg mb-2">
       <div className="flex justify-between items-center gap-4">
         <div className="w-20">
-          <Image width={240} height={240} src={product.image} alt={""} />
+          <Image width={240} height={240} src={product.image} alt={""} className="rounded-lg" />
         </div>
         <div className="grow">
 

@@ -28,7 +28,7 @@ export default function Header() {
   }, [cartProducts]);
 
   return (
-    !pathname?.includes('/details') ?
+    pathname?.includes('/menu') ?
     <header className="flex items-center justify-between font-poppins font-xl bg-[#0d0d0d] py-4 pl-2 pr-4">
       <Navbar onMenuOpenChange={setIsMenuOpen}>
         <NavbarContent>
