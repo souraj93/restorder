@@ -1,49 +1,62 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import CartProduct from "@/components/menu/CartProduct";
 import { Card, CardBody } from "@nextui-org/react";
+import {BillingSummary} from "@/components/ui/billingSummary";
+import { useRouter } from "next/navigation";
 
 export default function ProductsList({
   cartProductsClient,
-  subtotal,
+  subtotal = 0,
   deletedFromCart,
+  hideAddToCart
 }) {
+
+  const router = useRouter();
+
+  const [billDetails, setBillDetails] = useState({
+    subTotal: 0,
+    cgst: 0,
+    sgst: 0,
+    total: 0
+  });
+
+  useEffect(() => {
+    if (subtotal) {
+      setBillDetails({
+        subTotal: (subtotal).toFixed(2),
+        cgst: (Number((subtotal).toFixed(2)) * 0.025).toFixed(2),
+        sgst: (Number((subtotal).toFixed(2)) * 0.025).toFixed(2),
+        total: (Number((subtotal).toFixed(2)) + Number((Number((subtotal).toFixed(2)) * 0.05).toFixed(2))).toFixed(2)
+      });
+    }
+  }, [subtotal]);
+
   return (
     <>
-      <div className="flex-grow px-4 overflow-y-auto scrollbar-hide" style={{
-        maxHeight: "calc(100vh - 80px)",
-        paddingBottom: "120px"
-    }}>
+      <div className="flex-grow px-4 overflow-y-auto scrollbar-hide bg-black" style={{
+        maxHeight: !hideAddToCart ? "calc(100vh - 80px)" : '',
+        paddingBottom: !hideAddToCart ? "120px" : '20px'
+      }}>
         {cartProductsClient?.length > 0 &&
           cartProductsClient.map((product, index) => (
             <CartProduct
               key={index}
               product={product}
               onRemove={!!deletedFromCart && (() => deletedFromCart(index))}
+              hideAddToCart={hideAddToCart}
             />
           ))}
-        <h4 className="text-white mb-2">Billing Summary</h4>
-        <div className="py-2 px-2 text-xs bg-[#2f2e33] rounded-lg">
-          <div className="w-full flex justify-between mb-2">
-            <span>Subtotal: </span><span>₹{(subtotal).toFixed(2)}</span>
-          </div>
-          <div className="w-full flex justify-between mb-2">
-            <span>CGST(2.5%): </span><span>₹{(Number((subtotal).toFixed(2)) * 0.025).toFixed(2)}</span>
-          </div>
-          <div className="w-full flex justify-between mb-2">
-            <span>SGST(2.5%): </span><span>₹{(Number((subtotal).toFixed(2)) * 0.025).toFixed(2)}</span>
-          </div>
-          <div className="w-full flex justify-between border-t-1 pt-2">
-            <span>Total: </span><span>₹{(Number((subtotal).toFixed(2)) + Number((Number((subtotal).toFixed(2)) * 0.05).toFixed(2))).toFixed(2)}</span>
-          </div>
-        </div>
+        <BillingSummary billDetails={billDetails} />
       </div>
-      <div className="p-2 fixed bottom-0 left-0 w-full ">
-        <Card shadow="lg" disableAnimation="true" className="bg-red-500 text-white">
-          <CardBody>
-            <button className="text-center">Place Order (₹{(Number((subtotal).toFixed(2)) + Number((Number((subtotal).toFixed(2)) * 0.05).toFixed(2))).toFixed(2)})</button>
-          </CardBody>
-        </Card>
-      </div>
+      {!hideAddToCart ?
+        <div className="p-2 fixed bottom-0 left-0 w-full ">
+          <Card shadow="lg" disableAnimation="true" className="bg-red-500 text-white">
+            <CardBody>
+              <button className="text-center" onClick={() => router.push('/order')}>Place Order (₹{(Number((subtotal).toFixed(2)) + Number((Number((subtotal).toFixed(2)) * 0.05).toFixed(2))).toFixed(2)})</button>
+            </CardBody>
+          </Card>
+        </div> : null}
     </>
   );
 }

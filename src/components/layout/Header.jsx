@@ -37,7 +37,7 @@ export default function Header() {
               className="text-white font-semibold text-xl"
               href="/menu"
             >
-              Cook My Food
+              ImmeDine
             </Link>
           </NavbarBrand>
         </NavbarContent>
@@ -45,7 +45,7 @@ export default function Header() {
         <Link href={"/cart"} className="relative">
           <ShoppingCart />
           {count > 0 && (
-            <span className="absolute -top-2 -right-4 bg-primary text-white text-xs px-2 py-1 rounded-full leading-3">
+            <span className="absolute -top-2 -right-4 bg-red-500 text-white text-xs px-2 py-1 rounded-full leading-3">
               {count}
             </span>
           )}

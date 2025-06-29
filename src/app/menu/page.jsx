@@ -125,7 +125,7 @@ export default function Menu() {
   };
 
   return (
-    <div className="h-full relative">
+    <div className="h-screen relative">
       <div className="flex mb-2 overflow-x-auto scrollbar-hide px-2">
         <BiSort fontSize={26} color={!sortOptions.some(each => each.selected) ? "#ffffff" : "#ef4444"} className="cursor-pointer" onClick={() => toggleSortDropdown(!displaySort)} />
         {displaySort && (
@@ -168,7 +168,7 @@ export default function Menu() {
         </div>
       </div>
 
-      <div id="scrollContainer" className="scrollbar-hide relative" style={{ height: '100vh', overflowY: 'scroll' }}>
+      <div id="scrollContainer" className="scrollbar-hide relative bg-black" style={{ height: '100vh', overflowY: 'scroll' }}>
         {isCategoryDisplayed && menuData.length && categories?.length > 0 ?
           categories.map((c) => (
             <section className="mt-2" id={c._id} key={c._id}>
@@ -233,9 +233,7 @@ export default function Menu() {
         className="fixed bottom-6 right-6 w-16 h-16 rounded-full bg-red-500 text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
         onClick={() => toggleMenu(!displayMenu)}
         style={{
-          boxShadow: "0px 4px 4px 2px rgba(239,68,68,0.75)",
-          "-webkit-box-shadow": "0px 4px 4px 2px rgba(239,68,68,0.75)",
-          "-moz-box-shadow": "0px 4px 4px 2px rgba(239,68,68,0.75)"
+          boxShadow: "0px 5px 2px 2px rgba(234, 18, 18, 0.94)"
         }}
       >
         Menu
