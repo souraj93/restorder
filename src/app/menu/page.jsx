@@ -175,7 +175,7 @@ export default function Menu() {
               <div className="px-2">
                 <SectionHeaders mainHeader={c.name} />
               </div>
-              <div className="grid grid-cols-2 gap-4 my-2 px-2 cursor-pointer" onClick={() => router.push('/details')}>
+              <div className="grid grid-cols-2 gap-4 my-2 px-2" onClick={() => router.push('/details')}>
                 {menuData
                   ?.filter((item) => item?.category?._id === c._id)
                   .map((item) => (
@@ -186,7 +186,7 @@ export default function Menu() {
           )) : null}
           {!isCategoryDisplayed && menuData.length ? 
             <section className="mt-2">
-              <div className="grid grid-cols-2 gap-4 my-2 px-2 cursor-pointer" onClick={() => router.push('/details')}>
+              <div className="grid grid-cols-2 gap-4 my-2 px-2" onClick={() => router.push('/details')}>
                 {menuData
                   .map((item) => (
                     <MenuItem key={item._id} {...item} />
