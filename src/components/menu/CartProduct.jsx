@@ -13,10 +13,10 @@ export default function CartProduct({ product, onRemove, hideAddToCart }) {
   };
 
   return (
-    <div className=" py-1 px-2 bg-[#2f2e33] rounded-lg mb-2">
+    <div className=" py-2 px-2 bg-[#2f2e33] rounded-lg mb-4">
       <div className="flex justify-between items-center gap-4">
-        <div className="w-20">
-          <Image width={240} height={240} src={product.image} alt={""} className="rounded-lg" />
+        <div className="w-16 h-16">
+          <Image width={100} height={100} src={product.image} alt={""} className="rounded-lg h-full" />
         </div>
         <div className="grow">
 

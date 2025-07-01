@@ -19,7 +19,7 @@ export function AddToCart(props) {
           e.stopPropagation();
           handleAddToCard(menuItem, 1)
         }}
-        className={`bg-red-500 text-white text-md rounded-full absolute right-1 -top-4 ${classes} ${buttonClasses}`}
+        className={`bg-primary text-white text-md rounded-full absolute right-1 -top-4 ${classes} ${buttonClasses}`}
         style={{
           padding: `0 ${buttonClasses ? '8px' : '7px'}`,
           top: classes && classes.includes('top-[290px]') ? '290px' : ''

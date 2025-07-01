@@ -34,12 +34,12 @@ export default function MenuDetailsPage() {
     label: 'Description',
     selected: true,
     color: 'bg-[#000000]',
-    selectedColor: 'bg-red-500'
+    selectedColor: 'bg-primary'
   }, {
     label: 'Ingredients',
     selected: false,
     color: 'bg-[#000000]',
-    selectedColor: 'bg-red-500'
+    selectedColor: 'bg-primary'
   }]);
 
   const addToCart = useCartProductsStore((state) => state.addToCart);
@@ -146,7 +146,7 @@ export default function MenuDetailsPage() {
           </div>
 
 
-          <div className="flex justify-center space-x-2 border-t-1 pt-4">
+          <div className="flex justify-center space-x-2 border-t-1 pt-4 pb-2">
             {filters.map((filter, index) => (
               <button
                 key={filter.label}
@@ -169,7 +169,7 @@ export default function MenuDetailsPage() {
         }}>
           <div className="flex items-center justify-between">
             <span className="text-lg font-bold">₹{menuItem.basePrice}</span>
-            {menuCount ? <button className="rounded-xl px-6 py-3 bg-red-500 text-white" onClick={() => {
+            {menuCount ? <button className="rounded-xl px-6 py-3 bg-primary text-white" onClick={() => {
               if (menuData.inCartCount !== menuCount) {
                 addToCart(menuItem, menuCount);
               }

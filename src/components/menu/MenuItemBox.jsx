@@ -5,7 +5,9 @@ import {AddToCart} from "@/components/ui/addToCart";
 export default function MenuItemBox({ menuItem, handleAddToCard }) {
   const { name, description, image, basePrice, inCartCount } = menuItem;
   return (
-    <div className="mx-auto h-36  w-full rounded-lg flex flex-col bg-white shadow-[0_0px_5px_rgba(0,0,0,0.25)] hover:shadow-black/25 transition-all relative"
+    <div className="mx-auto  w-full rounded-lg flex flex-col bg-white shadow-[0_0px_5px_rgba(0,0,0,0.25)] hover:shadow-black/25 transition-all relative" style={{
+      height: "130px"
+    }}
     // style={{
     //   backgroundImage: `url(${image})`,
     //   backgroundSize: 'cover',
@@ -21,7 +23,7 @@ export default function MenuItemBox({ menuItem, handleAddToCard }) {
         <Image src={image} layout={"fill"} alt={""} className="rounded-lg" />
       </div>
 
-      <div className="absolute left-0 bottom-0 bg-black/50 rounded-lg p-1 w-full">
+      <div className="absolute left-0 bottom-0 bg-black/50 rounded-lg px-2 py-2 w-full">
         <div className="flex justify-between items-center relative">
           <div>
             <h4 className="font-semibold text-xs"

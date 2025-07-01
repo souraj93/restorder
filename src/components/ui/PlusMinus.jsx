@@ -5,7 +5,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
     !isVertical ?
     <div className="flex items-center justify-center gap-2">
       <button
-        className="bg-red-500 text-xl rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700"
+        className="bg-primary text-xl rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700"
         onClick={(e) => {
           e.stopPropagation();
           // Remove one item from cart
@@ -17,7 +17,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
       </button>
       <span className="text-md font-bold w-4 text-center">{inCartCount}</span>
       <button
-        className="bg-red-500 text-xl rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700"
+        className="bg-primary text-xl rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-700"
         onClick={(e) => {
           e.stopPropagation();
           // Add one more item to cart
@@ -34,7 +34,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
         }}
     >
       <button
-        className={`bg-red-500 text-sm rounded-full flex items-center justify-center hover:bg-red-700 ${buttonClasses}`}
+        className={`bg-primary text-sm rounded-full flex items-center justify-center hover:bg-red-700 ${buttonClasses}`}
         style={{
           padding: `0 ${buttonClasses && !buttonClasses.includes('text-sm') ? '11px' : '8px'}`
         }}
@@ -49,7 +49,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
       </button>
       <span className={`text-sm font-bold w-4 text-center ${buttonClasses}`}>{inCartCount}</span>
       <button
-        className={`bg-red-500 text-sm rounded-full flex items-center justify-center hover:bg-red-700 ${buttonClasses}`}
+        className={`bg-primary text-sm rounded-full flex items-center justify-center hover:bg-red-700 ${buttonClasses}`}
         style={{
           padding: `0 ${buttonClasses && !buttonClasses.includes('text-sm') ? '8px' : '6px'}`
         }}

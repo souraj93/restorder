@@ -4,7 +4,7 @@ export function CookingProgress({ currentStep }) {
   const steps = ['Accepted', 'Cooking', 'Ready', 'Completed'];
 
   return (
-    <div className="flex items-center justify-between my-4 px-8">
+    <div className="flex items-center justify-between my-4 px-12">
       {steps.map((step, index) => {
         const isCompleted = index <= currentStep;
         const showLine = index < steps.length - 1;

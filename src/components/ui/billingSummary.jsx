@@ -4,7 +4,7 @@ export function BillingSummary({ billDetails }) {
 
   return <>
     <h4 className="text-white mb-2">Billing Summary</h4>
-    <div className="py-2 px-2 text-xs bg-[#2f2e33] rounded-lg">
+    <div className="px-2 py-3 text-xs bg-[#2f2e33] rounded-lg">
       <div className="w-full flex justify-between mb-2">
         <span>Subtotal: </span><span>₹{billDetails.subTotal}</span>
       </div>
