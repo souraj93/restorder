@@ -8,6 +8,7 @@ import { useMenuItems } from "@/Hooks/useMenuItems";
 import { useEffect, useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/UserStore";
 
 export default function Menu() {
   const router = useRouter();
@@ -26,6 +27,10 @@ export default function Menu() {
   const [displayMenu, toggleMenu] = useState(false);
   const [displaySort, toggleSortDropdown] = useState(false);
   const [isCategoryDisplayed, toggleCategory] = useState(true);
+  const [isDark, toggleTheme] = useState(true);
+
+  const userData = useUserStore((state) => state.user);
+  
 
   useEffect(() => {
     if (menuItems) {
@@ -126,7 +131,7 @@ export default function Menu() {
 
   return (
     <div className="h-screen relative">
-      <div className="flex justify-between px-4 pb-2">
+      <div className={`flex justify-between px-4 pb-2 bg-${!userData?.dark? "[#0d0d0d]" : "white"}`}>
         <button
           className={`py-2 px-4 rounded-full hover:bg-primary transition-colors flex items-center relative bg-${(sortOptions.some(each => each.selected) ||
           filters.some(each => each.selected)) ? "primary" : "[#2f2e33]"}`}
@@ -179,6 +184,7 @@ export default function Menu() {
               />
             </>
           )}
+
         <button
           className="p-2 rounded-full bg-[#2f2e33] hover:bg-primary transition-colors"
           aria-label="Search"
@@ -241,12 +247,12 @@ export default function Menu() {
         </div>
       </div> */}
 
-      <div id="scrollContainer" className="scrollbar-hide relative bg-[#0d0d0d] h-screen overflow-y-auto">
+      <div id="scrollContainer" className={`scrollbar-hide relative bg-${!userData?.dark? "[#0d0d0d]" : "white"} h-screen overflow-y-auto`}>
         {isCategoryDisplayed && menuData.length && categories?.length > 0 ?
           categories.map((c) => (
             <section className="mt-2" id={c._id} key={c._id}>
               <div className="px-4">
-                <SectionHeaders mainHeader={c.name} />
+                <SectionHeaders mainHeader={c.name} isDark={!userData?.dark} />
               </div>
               <div className="grid grid-cols-2 gap-4 my-2 px-4" onClick={() => router.push('/details')}>
                 {menuData

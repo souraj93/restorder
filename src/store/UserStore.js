@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 export const useUserStore = create((set, get) => ({
-  user: undefined,
-  setUser: (user) => set((state) => ({ ...state, user })),
+  user: {dark: false},
+  setUser: (user) => set((state) => {
+    return  { ...state, user }
+  }),
 }));
