@@ -126,7 +126,7 @@ export default function Menu() {
 
   return (
     <div className="h-screen relative">
-      <div className="flex justify-between px-4">
+      <div className="flex justify-between px-4 pb-2">
         <button
           className={`py-2 px-4 rounded-full hover:bg-primary transition-colors flex items-center relative bg-${(sortOptions.some(each => each.selected) ||
           filters.some(each => each.selected)) ? "primary" : "[#2f2e33]"}`}
