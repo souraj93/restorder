@@ -16,7 +16,7 @@ import { useCartProductsStore } from "@/store/CartProductStore";
 export default function Menu() {
   const router = useRouter();
   const cartProducts = useCartProductsStore((state) => state.cartProducts);
-  
+
   const {
     categories,
     error: catError,
@@ -33,12 +33,13 @@ export default function Menu() {
   const [displaySort, toggleSortDropdown] = useState(false);
   const [isCategoryDisplayed, toggleCategory] = useState(true);
   const [count, setCount] = useState(0);
+  const [isCardView, toggleView] = useState(true);
 
   const userData = useUserStore((state) => state.user);
 
   useEffect(() => {
-      setCount(cartProducts.length);
-    }, [cartProducts]);
+    setCount(cartProducts.length);
+  }, [cartProducts]);
 
 
   useEffect(() => {
@@ -219,26 +220,58 @@ export default function Menu() {
             />
           </>
         )}
-
-        <button
-          className={`p-2 rounded-full bg-${!userData?.dark ? "[#2f2e33]" : "white"} hover:bg-primary transition-colors`}
-          aria-label="Search"
-          onClick={() => {
-            // Implement search modal or input toggle here
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-5 w-5 text-${!userData?.dark ? "white" : "black"}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+        <div className="flex items-center space-x-2">
+          <div className="border rounded-lg p-1">
+          <button
+            className={`p-1 rounded-full ${!isCardView ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"}`}
+            aria-label="Card view"
+            onClick={() => toggleView(true)}
+            title="Card view"
           >
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" fill="none" />
-            <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" />
-          </svg>
-        </button>
+            {/* Card/Grid Icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          </button>
+          <button
+            className={`p-1 ml-1 rounded-full ${isCardView ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"}`}
+            aria-label="List view"
+            onClick={() => toggleView(false)}
+            title="List view"
+          >
+            {/* List Icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <rect x="4" y="6" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
+              <rect x="4" y="11" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
+              <rect x="4" y="16" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          </button>
+          </div>
+          <button
+            className={`p-2 rounded-full bg-${!userData?.dark ? "[#2f2e33]" : "white"} transition-colors`}
+            aria-label="Search"
+            onClick={() => {
+              // Implement search modal or input toggle here
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-5 w-5 text-${!userData?.dark ? "white" : "black"}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" fill="none" />
+              <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          </button>
+        </div>
+
+
       </div>
       {/* <div className="flex mb-2 overflow-x-auto scrollbar-hide px-2">
         <BiSort fontSize={26} color={!sortOptions.some(each => each.selected) ? "#ffffff" : "#ef4444"} className="cursor-pointer" onClick={() => toggleSortDropdown(!displaySort)} />
@@ -343,27 +376,27 @@ export default function Menu() {
         </div>
       )} */}
       {count ?
-      <Link href={"/cart"} className={`relative text-white}`}>
+        <Link href={"/cart"} className={`relative text-white}`}>
           <div className="fixed right-0 top-64 z-50 py-4 px-2 bg-primary" style={{
             borderTopLeftRadius: "15px",
             borderBottomLeftRadius: "15px"
           }}>
             <ShoppingCart />
             {count > 0 && (
-            <span className={`absolute top-2 right-4 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
-              {count}
-            </span>
-          )}
+              <span className={`absolute top-2 right-4 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
+                {count}
+              </span>
+            )}
           </div>
-          
+
         </Link> : null}
-      
+
       <button
         className="fixed bottom-6 left-6 w-12 h-12 rounded-full bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
         onClick={() => toggleMenu(!displayMenu)}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3.09 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.13.81.37 1.6.7 2.34a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.74.33 1.53.57 2.34.7A2 2 0 0 1 22 16.92z"/>
+          <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3.09 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.13.81.37 1.6.7 2.34a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.74.33 1.53.57 2.34.7A2 2 0 0 1 22 16.92z" />
         </svg>
       </button>
     </div>
