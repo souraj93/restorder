@@ -1,7 +1,7 @@
 export const mockMenuItems = [
   {
     _id: "1",
-    name: "Crispy Veg Spring Rolls",
+    name: "Veg Spring Rolls",
     description: "Deep-fried rolls stuffed with spicy vegetables, served with sweet chili sauce.",
     basePrice: 120,
     category: { _id: "1", name: "Starters" },
@@ -46,7 +46,7 @@ export const mockMenuItems = [
   },
   {
     _id: 6,
-    name: "Chicken Butter Masala",
+    name: "Chicken Masala",
     image: "https://i.pinimg.com/736x/c6/65/c7/c665c758a0b5d5a6a93db951d11124d1.jpg",
     basePrice: 260,
     isNonVeg: true,

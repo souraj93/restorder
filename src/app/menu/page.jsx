@@ -342,6 +342,7 @@ export default function Menu() {
           />
         </div>
       )} */}
+      {count ?
       <Link href={"/cart"} className={`relative text-white}`}>
           <div className="fixed right-0 top-64 z-50 py-4 px-2 bg-primary" style={{
             borderTopLeftRadius: "15px",
@@ -355,7 +356,7 @@ export default function Menu() {
           )}
           </div>
           
-        </Link>
+        </Link> : null}
       
       <button
         className="fixed bottom-6 left-6 w-12 h-12 rounded-full bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
