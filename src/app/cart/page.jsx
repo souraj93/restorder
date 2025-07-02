@@ -11,9 +11,9 @@ import BackButton from "@/components/ui/backButton";
 
 export default function CartPage() {
   const [cartProductsClient, setCartProductsClient] = useState([]);
+  const userData = useUserStore((state) => state.user);
 
   const cartProducts = useCartProductsStore((state) => state.cartProducts);
-  const user = useUserStore((state) => state.user);
   const deletedFromCart = useCartProductsStore(
     (state) => state.deletedFromCart
   );
@@ -44,12 +44,15 @@ export default function CartPage() {
   }
 
   return (
-    <section className="h-screen mt-4">
-      <div className="text-center">
+    <section className="h-screen">
+      <div className={`text-center bg-${!userData?.dark ? "primary" : "primary"} py-4`} style={{
+        borderBottomRightRadius: "15px",
+        borderBottomLeftRadius: "15px"
+      }}>
         <SectionHeaders mainHeader="Cart" />
         <BackButton />
       </div>
-      <div className="flex gap-2 justify-between flex-col mt-4 md:flex-row">
+      <div className="flex gap-2 justify-between flex-col md:flex-row">
         <ProductsList
           cartProductsClient={cartProductsClient}
           subtotal={subtotal}

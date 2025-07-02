@@ -4,6 +4,7 @@ import CartProduct from "@/components/menu/CartProduct";
 import { Card, CardBody } from "@nextui-org/react";
 import {BillingSummary} from "@/components/ui/billingSummary";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/UserStore";
 
 export default function ProductsList({
   cartProductsClient,
@@ -11,6 +12,7 @@ export default function ProductsList({
   deletedFromCart,
   hideAddToCart
 }) {
+  const userData = useUserStore((state) => state.user);
 
   const router = useRouter();
 
@@ -34,7 +36,7 @@ export default function ProductsList({
 
   return (
     <>
-      <div className="flex-grow px-4 overflow-y-auto scrollbar-hide bg-[#0d0d0d]" style={{
+      <div className={`flex-grow px-4 pt-4 overflow-y-auto scrollbar-hide bg-${!userData?.dark ? "[#0d0d0d]" : "white"}`} style={{
         maxHeight: !hideAddToCart ? "calc(100vh - 80px)" : '',
         paddingBottom: !hideAddToCart ? "120px" : '20px'
       }}>

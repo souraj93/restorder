@@ -9,9 +9,14 @@ import { useEffect, useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/UserStore";
+import ShoppingCart from "@/components/icons/ShoppingCart";
+import Link from "next/link";
+import { useCartProductsStore } from "@/store/CartProductStore";
 
 export default function Menu() {
   const router = useRouter();
+  const cartProducts = useCartProductsStore((state) => state.cartProducts);
+  
   const {
     categories,
     error: catError,
@@ -27,10 +32,14 @@ export default function Menu() {
   const [displayMenu, toggleMenu] = useState(false);
   const [displaySort, toggleSortDropdown] = useState(false);
   const [isCategoryDisplayed, toggleCategory] = useState(true);
-  const [isDark, toggleTheme] = useState(true);
+  const [count, setCount] = useState(0);
 
   const userData = useUserStore((state) => state.user);
-  
+
+  useEffect(() => {
+      setCount(cartProducts.length);
+    }, [cartProducts]);
+
 
   useEffect(() => {
     if (menuItems) {
@@ -131,62 +140,88 @@ export default function Menu() {
 
   return (
     <div className="h-screen relative">
-      <div className={`flex justify-between px-4 pb-2 bg-${!userData?.dark? "[#0d0d0d]" : "white"}`}>
+      <div className={`flex justify-between px-4 pb-4 bg-${!userData?.dark ? "primary" : "primary"}`} style={{
+        borderBottomRightRadius: "15px",
+        borderBottomLeftRadius: "15px"
+      }}>
         <button
-          className={`py-2 px-4 rounded-full hover:bg-primary transition-colors flex items-center relative bg-${(sortOptions.some(each => each.selected) ||
-          filters.some(each => each.selected)) ? "primary" : "[#2f2e33]"}`}
+          className={`py-2 px-4 rounded-full transition-colors flex items-center relative 
+            ${!userData?.dark ? "bg-[#2f2e33]" : "bg-white"}
+            `}
           aria-label="Filters"
           onClick={() => toggleSortDropdown(!displaySort)}
         >
-          <BiSort fontSize={14} color="#fff" />
-          <span className="ml-1 text-white text-xs">Filters</span>
+          <BiSort fontSize={14} color={!userData?.dark ? "white" : "black"} />
+          <span className={`ml-1 text-${!userData?.dark ? "white" : "black"} text-xs`}>Filters</span>
         </button>
         {displaySort && (
-            <>
-              <div className="absolute left-2 top-10 z-50 max-h-96 overflow-y-auto bg-[#23222a] rounded-lg shadow-lg p-4" style={{
-                width: "96%"
-              }}>
-                <div className="pb-2 text-xs text-gray-300 font-semibold mb-2">Sort By</div>
-                {sortOptions.map((each, idx) => (
-                  <button
-                    key={each.label}
-                    className={`px-4 py-2 rounded-full ${each.selected ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"} text-xs w-max text-white mr-2`}
-                    onClick={() => {
-                      sortMenuItems(idx);
-                      toggleSortDropdown(false);
-                    }}
-                  >
-                    {each.label}
-                  </button>
-                ))}
-                <div className="border-t border-gray-700 my-2 mt-4" />
-                <div className="py-2 text-xs text-gray-300 font-semibold mb-2">Filter by</div>
-                {filters.map((filter) => (
-                  <button
-                    key={filter.label}
-                    className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max text-white mr-2`}
-                    onClick={() => {
-                      setFilters(filters.map(f =>
-                        f.label === filter.label ? { ...f, selected: !f.selected } : f
-                      ));
-                      filterMenuItems(filter.label);
-                    }}
-                  >
-                    {filter.label}
-                  </button>
-                ))}
-              </div>
-              <div
-                className="fixed inset-0 bg-black bg-opacity-40 z-40"
-                onClick={() => toggleSortDropdown(false)}
-                tabIndex={-1}
-                aria-label="Close filters overlay"
-              />
-            </>
-          )}
+          <>
+            <div className="absolute left-2 top-10 z-50 max-h-96 overflow-y-auto bg-[#23222a] rounded-lg shadow-lg p-4" style={{
+              width: "96%"
+            }}>
+              <div className="pb-2 text-xs text-gray-300 font-semibold mb-2">Sort By</div>
+              {sortOptions.map((each, idx) => (
+                <button
+                  key={each.label}
+                  className={`px-4 py-2 rounded-full ${each.selected ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"} text-xs w-max text-white mr-2`}
+                  onClick={() => {
+                    sortMenuItems(idx);
+                    toggleSortDropdown(false);
+                  }}
+                >
+                  {each.label}
+                </button>
+              ))}
+              <div className="border-t border-gray-700 my-2 mt-4" />
+              <div className="py-2 text-xs text-gray-300 font-semibold mb-2">Filter by</div>
+              {filters.map((filter) => (
+                <button
+                  key={filter.label}
+                  className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max text-white mr-2`}
+                  onClick={() => {
+                    setFilters(filters.map(f =>
+                      f.label === filter.label ? { ...f, selected: !f.selected } : f
+                    ));
+                    filterMenuItems(filter.label);
+                    toggleSortDropdown(false);
+                  }}
+                >
+                  {filter.label}
+                </button>
+              ))}
+              <div className="border-t border-gray-700 my-2 mt-4" />
+              <div className="py-2 text-xs text-gray-300 font-semibold mb-2">Menu</div>
+              {categories?.map((c) => (
+                <button
+                  key={c._id}
+                  className={`px-4 py-2 rounded-full bg-[#2f2e33] text-xs w-max text-white mr-2 mb-2`}
+                  onClick={() => {
+                    const section = document.getElementById(c._id);
+                    const container = document.getElementById('scrollContainer');
+                    if (section && container) {
+                      container.scrollTo({
+                        top: section.offsetTop - 200,
+                        behavior: 'smooth'
+                      });
+                    }
+                    toggleSortDropdown(false);
+                  }}
+                >
+                  {c.name}
+                </button>
+              ))}
+            </div>
+            <div
+              className="fixed inset-0 bg-black bg-opacity-40 z-40"
+              onClick={() => toggleSortDropdown(false)}
+              tabIndex={-1}
+              aria-label="Close filters overlay"
+            />
+          </>
+        )}
 
         <button
-          className="p-2 rounded-full bg-[#2f2e33] hover:bg-primary transition-colors"
+          className={`p-2 rounded-full bg-${!userData?.dark ? "[#2f2e33]" : "white"} hover:bg-primary transition-colors`}
           aria-label="Search"
           onClick={() => {
             // Implement search modal or input toggle here
@@ -194,7 +229,7 @@ export default function Menu() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-white"
+            className={`h-5 w-5 text-${!userData?.dark ? "white" : "black"}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -247,7 +282,7 @@ export default function Menu() {
         </div>
       </div> */}
 
-      <div id="scrollContainer" className={`scrollbar-hide relative bg-${!userData?.dark? "[#0d0d0d]" : "white"} h-screen overflow-y-auto`}>
+      <div id="scrollContainer" className={`scrollbar-hide relative bg-${!userData?.dark ? "[#0d0d0d]" : "white"} h-screen overflow-y-auto`}>
         {isCategoryDisplayed && menuData.length && categories?.length > 0 ?
           categories.map((c) => (
             <section className="mt-2" id={c._id} key={c._id}>
@@ -274,7 +309,7 @@ export default function Menu() {
           </section>
           : null}
       </div>
-      {displayMenu && (
+      {/* {displayMenu && (
         <div className="fixed top-0 left-0 w-full h-full bg-[#0d0d0d] bg-opacity-40 z-50 flex items-start justify-end">
           <div className="bg-[#47465c] rounded-lg shadow-lg mt-0 mr-0 w-64 max-h-48 overflow-y-auto absolute bottom-24 right-8">
             <ul className="divide-y">
@@ -306,17 +341,30 @@ export default function Menu() {
             aria-label="Close category menu"
           />
         </div>
-      )}
-      {/* {isCategoryDisplayed ?
+      )} */}
+      <Link href={"/cart"} className={`relative text-white}`}>
+          <div className="fixed right-0 top-64 z-50 py-4 px-2 bg-primary" style={{
+            borderTopLeftRadius: "15px",
+            borderBottomLeftRadius: "15px"
+          }}>
+            <ShoppingCart />
+            {count > 0 && (
+            <span className={`absolute top-2 right-4 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
+              {count}
+            </span>
+          )}
+          </div>
+          
+        </Link>
+      
       <button
-        className="fixed bottom-6 right-6 w-16 h-16 rounded-full bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
+        className="fixed bottom-6 left-6 w-12 h-12 rounded-full bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
         onClick={() => toggleMenu(!displayMenu)}
-        style={{
-          boxShadow: "0px 5px 2px 2px rgba(234, 18, 18, 0.94)"
-        }}
       >
-        Menu
-      </button> : null} */}
+        <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3.09 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.13.81.37 1.6.7 2.34a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.74.33 1.53.57 2.34.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </button>
     </div>
   );
 }

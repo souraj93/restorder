@@ -28,7 +28,7 @@ export default function PlusMinus({ menuItem, handleAddToCard, inCartCount, isVe
         +
       </button>
     </div> : 
-    <div className={`absolute right-0 bg-black/50 text-center rounded-lg ${classes && classes.includes('p-') ? classes : `p-2 ${classes}`}`} 
+    <div className={`absolute right-0 bg-black/50 text-center rounded-lg text-white ${classes && classes.includes('p-') ? classes : `p-2 ${classes}`}`} 
         style={{
           top: `${classes && classes.includes('top-[250px]') ? '250px' : classes && classes.includes('top') ? '' : '-45px'}`
         }}

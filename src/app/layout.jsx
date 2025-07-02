@@ -2,6 +2,7 @@ import { Roboto, Poppins, Lemon } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Main from "@/components/layout/Main";
 
 import { Providers } from "./providers/NextUiProvider";
 import { getServerSession } from "next-auth";
@@ -35,13 +36,13 @@ export default async function RootLayout({ children }) {
         className={`${roboto.className} ${poppins.variable} ${lemon.variable}`}
       >
         <SessionProvider session={{}}>
-          <main className="max-w-4xl border mx-auto bg-[#0d0d0d] text-white">
+          <Main>
             <Providers>
               <Header />
               {children}
               {/* <Footer /> */}
             </Providers>
-          </main>
+          </Main>
         </SessionProvider>
       </body>
     </html>
