@@ -9,7 +9,7 @@ export function BillingSummary({ billDetails }) {
     <h4 className={`text-${!userData?.dark ? "white" : "black"} mb-2`}>Billing Summary</h4>
     <div className={`px-2 py-3 text-xs bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"} rounded-lg`}
     style={{
-      boxShadow: userData?.dark ? '2px 3px 7px 0px rgba(0,0,0,0.7)' : 'none'
+      boxShadow: userData?.dark ? '2px 2px 7px 0px rgba(0,0,0,0.7)' : 'none'
     }}>
       <div className="w-full flex justify-between mb-2">
         <span>Subtotal: </span><span>₹{billDetails.subTotal}</span>

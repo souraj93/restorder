@@ -45,10 +45,7 @@ export default function CartPage() {
 
   return (
     <section className="h-screen">
-      <div className={`text-center bg-${!userData?.dark ? "primary" : "primary"} py-4`} style={{
-        borderBottomRightRadius: "15px",
-        borderBottomLeftRadius: "15px"
-      }}>
+      <div className={`text-center bg-${!userData?.dark ? "primary" : "primary"} py-4`}>
         <SectionHeaders mainHeader="Cart" />
         <BackButton />
       </div>

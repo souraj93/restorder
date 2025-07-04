@@ -9,16 +9,18 @@ import { useCartProductsStore } from '@/store/CartProductStore';
 import { AddToCart } from '@/components/ui/addToCart';
 import { useRouter } from 'next/navigation';
 import BackButton from '@/components/ui/backButton';
+import { useUserStore } from '@/store/UserStore';
 
 const menuItem = {
   _id: "1",
-  name: 'Bhapa Bhetki Thali',
-  description: 'Plain rice served with Bhapa Bhetki, a traditional Bengali fish dish.',
-  ingredients: '2 tbsp butter \n 1 tbsp oil\n 1 bay leaf\n 1–2 green cardamoms\n 1 inch cinnamon stick\n 4 medium tomatoes, chopped\n 1–2 green chilies \n 10–12 cashew nuts\n 1 tsp ginger-garlic paste\n 2 tbsp butter \n 1 tbsp oil\n 1 bay leaf\n 1–2 green cardamoms\n 1 inch cinnamon stick\n 4 medium tomatoes, chopped\n 1–2 green chilies \n 10–12 cashew nuts\n 1 tsp ginger-garlic paste',
-  basePrice: 499,
+  name: 'Veg Spring Rolls',
+  description: 'Crispy and delicious vegetable spring rolls served with a tangy dipping sauce.',
+  ingredients: '2 cups mixed vegetables (carrot, cabbage, bell pepper)\n1 tsp soy sauce\n1 tsp ginger-garlic paste\n1/2 tsp black pepper\nSpring roll wrappers\nOil for frying',
+  basePrice: 120,
   images: [
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4WgHKAVcjSG9IXDRbB5prngjkm8IH9dwcA&s',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Kolkata_mutton_biryani.jpg/1200px-Kolkata_mutton_biryani.jpg'
+    'https://i.pinimg.com/736x/74/55/86/7455861056a201b44b68a5ef65e36583.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFXK5esIT1QUF4zgwz7QVYsz2FSOt5sZ-PZA&s',
+    
   ],
   likedBy: 5
 };
@@ -43,6 +45,7 @@ export default function MenuDetailsPage() {
   }]);
 
   const addToCart = useCartProductsStore((state) => state.addToCart);
+  const userData = useUserStore((state) => state.user);
 
   const cartData = useCartProductsStore((state) => state.cartProducts);
 
@@ -93,7 +96,7 @@ export default function MenuDetailsPage() {
 
 
   return (
-    <div className="max-w-md mx-auto h-screen menu-details bg-[#2f2e33] scrollbar-hide">
+    <div className={`max-w-md mx-auto h-screen menu-details ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} scrollbar-hide`}>
       <div className='flex justify-between'>
         <BackButton />
         {/* <button
@@ -111,13 +114,13 @@ export default function MenuDetailsPage() {
         </svg>}
       </button> */}
       </div>
-      <Card className="rounded-2xl shadow-lg overflow-hidden bg-[#2f2e33] h-screen relative">
-        <Carousel className="w-full h-80">
-          {menuItem.images.map((img, index) => (
+      <Card className={`rounded-2xl shadow-lg overflow-hidden ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} h-screen relative`}>
+        <Carousel className="w-full h-80" items={menuItem.images}>
+          {/* {menuItem.images.map((img, index) => (
             <CarouselItem key={index} active={index === currentImageIndex}>
               <img src={img} alt={`Image ${index + 1}`} className="w-full h-80 object-fill" />
             </CarouselItem>
-          ))}
+          ))} */}
         </Carousel>
         <AddToCart
             menuItem={menuItem}
@@ -126,7 +129,7 @@ export default function MenuDetailsPage() {
             classes={`right-12 z-[100] top-[${menuCount ? '250' : '290'}px] p-1`}
             buttonClasses={`text-xl`}
           />
-        <CardContent className="p-4 space-y-2 bg-[#2f2e33] details overflow-y-auto pb-[160px] scrollbar-hide">
+        <CardContent className={`p-4 space-y-2 ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} details overflow-y-auto pb-[160px] scrollbar-hide`}>
           
           <h2 className="text-xl font-semibold">{menuItem.name}</h2>
 
@@ -134,8 +137,8 @@ export default function MenuDetailsPage() {
             margin: "15px 0 25px"
           }}>
             <div>
-              <span className="text-xs rounded-full px-4 py-2 border mr-2">Total Order: 50</span>
-              <span className="text-xs rounded-full px-4 py-2 border">Veg</span>
+              <span className={`text-xs rounded-full px-4 py-2 border ${!userData?.dark ? 'border-white' : 'border-black'} mr-2`}>Total Order: 50</span>
+              <span className={`text-xs rounded-full px-4 py-2 border ${!userData?.dark ? 'border-white' : 'border-black'}`}>Veg</span>
             </div>
             <div className="flex items-center space-x-1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="#FFD700" viewBox="0 0 20 20" className="w-5 h-5">
@@ -146,7 +149,7 @@ export default function MenuDetailsPage() {
           </div>
 
 
-          <div className="flex justify-center space-x-2 border-t-1 pt-4 pb-2">
+          <div className={`flex justify-center space-x-2 border-t-1 ${!userData?.dark ? 'border-white' : ' border-black'} pt-4 pb-2`}>
             {filters.map((filter, index) => (
               <button
                 key={filter.label}
@@ -160,11 +163,11 @@ export default function MenuDetailsPage() {
             ))}
           </div>
 
-          <p className="text-white text-sm overflow-y-auto border rounded-lg py-2 px-4" dangerouslySetInnerHTML={
+          <p className={`border ${!userData?.dark ? 'text-white border-white' : 'text-black border-black'} text-sm overflow-y-auto rounded-lg py-2 px-4`} dangerouslySetInnerHTML={
             { __html: filters[0].selected ? menuItem.description : convertToHtml(menuItem.ingredients) }
           }></p>
         </CardContent>
-        <div className='fixed bottom-0 left-0 w-full p-4 bg-[#2f2e33] border-t-1' style={{
+        <div className={`fixed bottom-0 left-0 w-full p-4 ${!userData?.dark ? 'bg-[#2f2e33] text-white border-white' : 'bg-white text-black border-black'} border-t-1`} style={{
           zIndex: 99
         }}>
           <div className="flex items-center justify-between">

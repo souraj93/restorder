@@ -30,16 +30,13 @@ export default function OrderDetailsPage() {
 
   return (
     <section className="h-screen">
-      <div className={`text-center bg-${!userData?.dark ? "primary" : "primary"} py-4`} style={{
-        borderBottomRightRadius: "15px",
-        borderBottomLeftRadius: "15px"
-      }}>
+      <div className={`text-center bg-${!userData?.dark ? "primary" : "primary"} py-4`}>
         <SectionHeaders mainHeader="Order #225" />
         <BackButton href="/menu" />
       </div>
       <div className="flex gap-2 justify-between flex-col md:flex-row">
         <div className="mb-4">
-        <CookingProgress currentStep={1} />
+        <CookingProgress currentStep={3} />
         </div>
         {/* <div className="text-gray-500 text-xs text-center my-4">
           Your order will be ready in 
@@ -50,6 +47,7 @@ export default function OrderDetailsPage() {
           subtotal={subtotal}
           deletedFromCart={deletedFromCart}
           hideAddToCart={true}
+          isRating={true}
         />
       </div>
     </section>

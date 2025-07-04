@@ -4,11 +4,13 @@ import { useCartProductsStore } from "@/store/CartProductStore";
 import Image from "next/image";
 import PlusMinus from "@/components/ui/PlusMinus";
 import { useUserStore } from "@/store/UserStore";
+import  Rating  from "@/components/ui/Rating";
+import { useState } from "react";
 
-export default function CartProduct({ product, onRemove, hideAddToCart }) {
+export default function CartProduct({ product, onRemove, hideAddToCart, isRating = false }) {
   const addToCart = useCartProductsStore((state) => state.addToCart);
   const userData = useUserStore((state) => state.user);
-  
+  const [rating, setRating] = useState(product.rating || 0);
 
   const handleAddToCard = async (menu, count) => {
     addToCart(menu, count);
@@ -16,7 +18,7 @@ export default function CartProduct({ product, onRemove, hideAddToCart }) {
 
   return (
     <div className={` py-2 px-2 ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} rounded-lg mb-4`} style={{
-      boxShadow: userData?.dark ? '2px 3px 7px 0px rgba(0,0,0,0.7)' : 'none'
+      boxShadow: userData?.dark ? '2px 2px 7px 0px rgba(0,0,0,0.7)' : 'none'
     }}>
       <div className="flex justify-between items-center gap-4">
         <div className="w-16 h-16">
@@ -38,6 +40,11 @@ export default function CartProduct({ product, onRemove, hideAddToCart }) {
                 </div>
                 : null}
               </div>
+              {isRating ?
+              <div className="mt-1">
+              <Rating value={rating} onChange={setRating} />
+              </div> 
+              : null}
             </div>
             {!hideAddToCart ?
             <PlusMinus
@@ -48,13 +55,7 @@ export default function CartProduct({ product, onRemove, hideAddToCart }) {
               classes={'relative top-0 p-1'}
               buttonClasses={'text-sm '}
             /> : null}
-            {/* {!!onRemove && (
-            <div>
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon onClick={() => onRemove()} />
-              </span>
-            </div>
-          )} */}
+            
           </div>
 
 

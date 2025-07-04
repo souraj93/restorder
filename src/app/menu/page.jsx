@@ -12,6 +12,7 @@ import { useUserStore } from "@/store/UserStore";
 import ShoppingCart from "@/components/icons/ShoppingCart";
 import Link from "next/link";
 import { useCartProductsStore } from "@/store/CartProductStore";
+import MenuListItem from "@/components/menu/MenuListItem";
 
 export default function Menu() {
   const router = useRouter();
@@ -141,10 +142,7 @@ export default function Menu() {
 
   return (
     <div className="h-screen relative">
-      <div className={`flex justify-between px-4 pb-4 bg-${!userData?.dark ? "primary" : "primary"}`} style={{
-        borderBottomRightRadius: "15px",
-        borderBottomLeftRadius: "15px"
-      }}>
+      <div className={`flex justify-between px-4 pb-4 bg-${!userData?.dark ? "primary" : "primary"}`}>
         <button
           className={`py-2 px-4 rounded-full transition-colors flex items-center relative 
             ${!userData?.dark ? "bg-[#2f2e33]" : "bg-white"}
@@ -160,37 +158,6 @@ export default function Menu() {
             <div className="absolute left-2 top-10 z-50 max-h-96 overflow-y-auto bg-[#23222a] rounded-lg shadow-lg p-4" style={{
               width: "96%"
             }}>
-              <div className="pb-2 text-xs text-gray-300 font-semibold mb-2">Sort By</div>
-              {sortOptions.map((each, idx) => (
-                <button
-                  key={each.label}
-                  className={`px-4 py-2 rounded-full ${each.selected ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"} text-xs w-max text-white mr-2`}
-                  onClick={() => {
-                    sortMenuItems(idx);
-                    toggleSortDropdown(false);
-                  }}
-                >
-                  {each.label}
-                </button>
-              ))}
-              <div className="border-t border-gray-700 my-2 mt-4" />
-              <div className="py-2 text-xs text-gray-300 font-semibold mb-2">Filter by</div>
-              {filters.map((filter) => (
-                <button
-                  key={filter.label}
-                  className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max text-white mr-2`}
-                  onClick={() => {
-                    setFilters(filters.map(f =>
-                      f.label === filter.label ? { ...f, selected: !f.selected } : f
-                    ));
-                    filterMenuItems(filter.label);
-                    toggleSortDropdown(false);
-                  }}
-                >
-                  {filter.label}
-                </button>
-              ))}
-              <div className="border-t border-gray-700 my-2 mt-4" />
               <div className="py-2 text-xs text-gray-300 font-semibold mb-2">Menu</div>
               {categories?.map((c) => (
                 <button
@@ -211,6 +178,38 @@ export default function Menu() {
                   {c.name}
                 </button>
               ))}
+              <div className="border-t border-gray-700 my-2 mt-4" />
+              <div className="py-2 text-xs text-gray-300 font-semibold mb-2">Filter by</div>
+              {filters.map((filter) => (
+                <button
+                  key={filter.label}
+                  className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max text-white mr-2`}
+                  onClick={() => {
+                    setFilters(filters.map(f =>
+                      f.label === filter.label ? { ...f, selected: !f.selected } : f
+                    ));
+                    filterMenuItems(filter.label);
+                    toggleSortDropdown(false);
+                  }}
+                >
+                  {filter.label}
+                </button>
+              ))}
+              <div className="border-t border-gray-700 my-2 mt-4" />
+              
+              <div className="pb-2 text-xs text-gray-300 font-semibold mb-2">Sort By</div>
+              {sortOptions.map((each, idx) => (
+                <button
+                  key={each.label}
+                  className={`px-4 py-2 rounded-full ${each.selected ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"} text-xs w-max text-white mr-2`}
+                  onClick={() => {
+                    sortMenuItems(idx);
+                    toggleSortDropdown(false);
+                  }}
+                >
+                  {each.label}
+                </button>
+              ))}
             </div>
             <div
               className="fixed inset-0 bg-black bg-opacity-40 z-40"
@@ -221,34 +220,35 @@ export default function Menu() {
           </>
         )}
         <div className="flex items-center space-x-2">
-          <div className="border rounded-lg p-1">
-          <button
-            className={`p-1 rounded-full ${!isCardView ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"}`}
-            aria-label="Card view"
-            onClick={() => toggleView(true)}
-            title="Card view"
-          >
-            {/* Card/Grid Icon */}
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
-              <rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
-              <rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
-              <rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
-            </svg>
-          </button>
-          <button
-            className={`p-1 ml-1 rounded-full ${isCardView ? "bg-primary text-white" : "bg-[#2f2e33] text-gray-200"}`}
-            aria-label="List view"
-            onClick={() => toggleView(false)}
-            title="List view"
-          >
-            {/* List Icon */}
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <rect x="4" y="6" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
-              <rect x="4" y="11" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
-              <rect x="4" y="16" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
-            </svg>
-          </button>
+          <div className={`rounded-full p-1 bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"}`}>
+          {!isCardView ?
+            <button
+              className={`p-1 rounded-full`}
+              aria-label="Card view"
+              onClick={() => toggleView(true)}
+              title="Card view"
+            >
+              {/* Card/Grid Icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+                <rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+                <rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+                <rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </button> :
+            <button
+              className={`p-1 rounded-full`}
+              aria-label="List view"
+              onClick={() => toggleView(false)}
+              title="List view"
+            >
+              {/* List Icon */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <rect x="4" y="6" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
+                <rect x="4" y="11" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
+                <rect x="4" y="16" width="16" height="2" rx="1" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </button>}
           </div>
           <button
             className={`p-2 rounded-full bg-${!userData?.dark ? "[#2f2e33]" : "white"} transition-colors`}
@@ -322,13 +322,25 @@ export default function Menu() {
               <div className="px-4">
                 <SectionHeaders mainHeader={c.name} isDark={!userData?.dark} />
               </div>
+              {!isCardView ?
+              <div className="px-4 pt-2">
+                {menuData
+                  ?.filter((item) => item?.category?._id === c._id)
+                  .map((product, index) => (
+                    <MenuListItem
+                      key={index}
+                      product={product}
+                      hideAddToCart={false}
+                    />
+                  ))}
+              </div> :
               <div className="grid grid-cols-2 gap-4 my-2 px-4" onClick={() => router.push('/details')}>
                 {menuData
                   ?.filter((item) => item?.category?._id === c._id)
                   .map((item) => (
                     <MenuItem key={item._id} {...item} />
                   ))}
-              </div>
+              </div> }
             </section>
           )) : null}
         {!isCategoryDisplayed && menuData.length ?
@@ -377,13 +389,10 @@ export default function Menu() {
       )} */}
       {count ?
         <Link href={"/cart"} className={`relative text-white}`}>
-          <div className="fixed right-0 top-64 z-50 py-4 px-2 bg-primary" style={{
-            borderTopLeftRadius: "15px",
-            borderBottomLeftRadius: "15px"
-          }}>
+          <div className="fixed left-6 bottom-24 z-50 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>">
             <ShoppingCart />
             {count > 0 && (
-              <span className={`absolute top-2 right-4 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
+              <span className={`absolute top-1 right-1 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
                 {count}
               </span>
             )}

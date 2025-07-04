@@ -10,7 +10,8 @@ export default function ProductsList({
   cartProductsClient,
   subtotal = 0,
   deletedFromCart,
-  hideAddToCart
+  hideAddToCart,
+  isRating = false
 }) {
   const userData = useUserStore((state) => state.user);
 
@@ -47,6 +48,7 @@ export default function ProductsList({
               product={product}
               onRemove={!!deletedFromCart && (() => deletedFromCart(index))}
               hideAddToCart={hideAddToCart}
+              isRating={isRating}
             />
           ))}
         <BillingSummary billDetails={billDetails} />
