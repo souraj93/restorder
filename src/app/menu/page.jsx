@@ -13,6 +13,7 @@ import ShoppingCart from "@/components/icons/ShoppingCart";
 import Link from "next/link";
 import { useCartProductsStore } from "@/store/CartProductStore";
 import MenuListItem from "@/components/menu/MenuListItem";
+import SearchModal from "@/components/ui/SearchModal";
 
 export default function Menu() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function Menu() {
   const [isCategoryDisplayed, toggleCategory] = useState(true);
   const [count, setCount] = useState(0);
   const [isCardView, toggleView] = useState(true);
+  const [showSearch, setShowSearch] = useState(false);
 
   const userData = useUserStore((state) => state.user);
 
@@ -142,6 +144,8 @@ export default function Menu() {
 
   return (
     <div className="h-screen relative">
+      {showSearch ?
+      <SearchModal open={showSearch} onClose={() => setShowSearch(false)} /> : null}
       <div className={`flex justify-between px-4 pb-4 bg-${!userData?.dark ? "primary" : "primary"}`}>
         <button
           className={`py-2 px-4 rounded-full transition-colors flex items-center relative 
@@ -255,6 +259,7 @@ export default function Menu() {
             aria-label="Search"
             onClick={() => {
               // Implement search modal or input toggle here
+              setShowSearch(true)
             }}
           >
             <svg
@@ -388,8 +393,8 @@ export default function Menu() {
         </div>
       )} */}
       {count ?
-        <Link href={"/cart"} className={`relative text-white}`}>
-          <div className="fixed left-6 bottom-24 z-50 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>">
+        <Link href={"/cart"} className={`relative text-white`}>
+          <div className="fixed left-6 bottom-24 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>">
             <ShoppingCart />
             {count > 0 && (
               <span className={`absolute top-1 right-1 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
