@@ -224,7 +224,9 @@ export default function Menu() {
           </>
         )}
         <div className="flex items-center space-x-2">
-          <div className={`rounded-full border p-1 bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"}`}>
+          <div className={`rounded-full border bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"}`} style={{
+            padding: "5px 7px",
+          }}>
           {!isCardView ?
             <button
               className={`p-1 rounded-full`}
