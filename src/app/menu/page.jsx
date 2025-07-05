@@ -355,7 +355,7 @@ export default function Menu() {
       )} */}
       {count ?
         <Link href={"/cart"} className={`relative text-white`}>
-          <div className="fixed left-6 bottom-24 w-12 h-12 bg-primary border rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>">
+          <div className={`fixed left-6 bottom-24 w-12 h-12 bg-primary border rounded-full ${!userData?.dark ? "text-white" : "text-black"} flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>
             {/* <ShoppingCart /> */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -381,7 +381,7 @@ export default function Menu() {
         </Link> : null}
 
       <button
-        className="fixed bottom-6 left-6 w-12 h-12 rounded-full border bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
+        className={`fixed bottom-6 left-6 w-12 h-12 rounded-full border bg-primary ${!userData?.dark ? "text-white" : "text-black"} text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none`}
         onClick={() => toggleMenu(!displayMenu)}
       >
         <svg
@@ -392,7 +392,7 @@ export default function Menu() {
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="w-6 h-6 text-gray-800 mx-auto"
+          className="w-7 h-7 mx-auto"
         >
           {/* Bell dome */}
           <path d="M4 17h16a1 1 0 0 0 1-1v-1a8 8 0 1 0-18 0v1a1 1 0 0 0 1 1z" />
