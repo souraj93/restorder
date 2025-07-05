@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export function Carousel({ items }) {
+export function Carousel({ items, openModal }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleDotClick = (index) => {
@@ -21,6 +21,7 @@ export function Carousel({ items }) {
                 src={item}
                 alt={item.alt || `Slide ${idx + 1}`}
                 className="w-full h-full object-cover"
+                onClick={() => openModal(activeIndex)}
               />
             </div>
           ))}

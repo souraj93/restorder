@@ -148,7 +148,7 @@ export default function Menu() {
       <SearchModal open={showSearch} onClose={() => setShowSearch(false)} /> : null}
       <div className={`flex justify-between px-4 pb-4 bg-${!userData?.dark ? "primary" : "primary"}`}>
         <button
-          className={`py-2 px-4 rounded-full transition-colors flex items-center relative 
+          className={`py-2 px-4 border rounded-full transition-colors flex items-center relative 
             ${!userData?.dark ? "bg-[#2f2e33]" : "bg-white"}
             `}
           aria-label="Filters"
@@ -224,7 +224,7 @@ export default function Menu() {
           </>
         )}
         <div className="flex items-center space-x-2">
-          <div className={`rounded-full p-1 bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"}`}>
+          <div className={`rounded-full border p-1 bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"}`}>
           {!isCardView ?
             <button
               className={`p-1 rounded-full`}
@@ -255,7 +255,7 @@ export default function Menu() {
             </button>}
           </div>
           <button
-            className={`p-2 rounded-full bg-${!userData?.dark ? "[#2f2e33]" : "white"} transition-colors`}
+            className={`p-2 rounded-full border bg-${!userData?.dark ? "[#2f2e33]" : "white"} transition-colors`}
             aria-label="Search"
             onClick={() => {
               // Implement search modal or input toggle here
@@ -278,52 +278,11 @@ export default function Menu() {
 
 
       </div>
-      {/* <div className="flex mb-2 overflow-x-auto scrollbar-hide px-2">
-        <BiSort fontSize={26} color={!sortOptions.some(each => each.selected) ? "#ffffff" : "#ef4444"} className="cursor-pointer" onClick={() => toggleSortDropdown(!displaySort)} />
-        {displaySort && (
-          <div className="fixed top-0 left-0 w-full h-full bg-[#47465c] bg-opacity-40 z-50 flex items-start justify-end">
-          <ul className="absolute z-10 mt-10 left-10 text-white
-           rounded-lg shadow-lg">
-            {sortOptions.map((each, index) => {
-              return <li key={each.label} 
-              className={`px-4 py-2 hover:bg-gray-100 cursor-pointer ${each.selected ? 'bg-primary' : 'bg-[#47465c]'}`}
-              onClick={() => {
-                sortMenuItems(index);
-                toggleSortDropdown(false);
-              }}
-              >{each.label}</li>
-            })}
-          </ul>
-          <div
-            className="flex-1 h-full"
-            onClick={() => toggleSortDropdown(false)}
-            tabIndex={-1}
-            aria-label="Close category menu"
-          />
-          </div>
-        )}
-        <div className="flex items-center space-x-2 ml-2">
-          {filters.map((filter) => (
-            <button
-              key={filter.label}
-              className={`px-4 py-2 rounded-full ${filter.selected ? filter.selectedColor : filter.color} text-xs w-max text-white`}
-              onClick={() => {
-                setFilters(filters.map(f =>
-                  f.label === filter.label ? { ...f, selected: !f.selected } : f
-                ));
-                filterMenuItems(filter.label);
-              }}
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
-      </div> */}
 
       <div id="scrollContainer" className={`scrollbar-hide relative bg-${!userData?.dark ? "[#0d0d0d]" : "white"} h-screen overflow-y-auto`}>
         {isCategoryDisplayed && menuData.length && categories?.length > 0 ?
           categories.map((c) => (
-            <section className="mt-2" id={c._id} key={c._id}>
+            <section className="mt-4" id={c._id} key={c._id}>
               <div className="px-4">
                 <SectionHeaders mainHeader={c.name} isDark={!userData?.dark} />
               </div>
@@ -394,10 +353,24 @@ export default function Menu() {
       )} */}
       {count ?
         <Link href={"/cart"} className={`relative text-white`}>
-          <div className="fixed left-6 bottom-24 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>">
-            <ShoppingCart />
+          <div className="fixed left-6 bottom-24 w-12 h-12 bg-primary border rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95`}>">
+            {/* <ShoppingCart /> */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <rect x="3" y="7" width="18" height="4" rx="1" />
+              <path d="M4 11v7M20 11v7M9 11v7M15 11v7" />
+            </svg>
             {count > 0 && (
-              <span className={`absolute top-1 right-1 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
+              <span className={`absolute top-0 right-0 ${!userData?.dark ? "bg-[#0d0d0d] text-white" : "bg-white text-black"} text-xs px-2 py-1 rounded-full leading-3`}>
                 {count}
               </span>
             )}
@@ -406,11 +379,26 @@ export default function Menu() {
         </Link> : null}
 
       <button
-        className="fixed bottom-6 left-6 w-12 h-12 rounded-full bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
+        className="fixed bottom-6 left-6 w-12 h-12 rounded-full border bg-primary text-white text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none"
         onClick={() => toggleMenu(!displayMenu)}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3.09 5.18 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.72c.13.81.37 1.6.7 2.34a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.74.33 1.53.57 2.34.7A2 2 0 0 1 22 16.92z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-6 h-6 text-gray-800 mx-auto"
+        >
+          {/* Bell dome */}
+          <path d="M4 17h16a1 1 0 0 0 1-1v-1a8 8 0 1 0-18 0v1a1 1 0 0 0 1 1z" />
+          {/* Base line */}
+          <path d="M2 21h20" />
+          {/* Bell button top */}
+          <path d="M12 5v2" />
+          <circle cx="12" cy="4" r="1" />
         </svg>
       </button>
     </div>

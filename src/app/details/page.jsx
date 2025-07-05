@@ -10,6 +10,7 @@ import { AddToCart } from '@/components/ui/addToCart';
 import { useRouter } from 'next/navigation';
 import BackButton from '@/components/ui/backButton';
 import { useUserStore } from '@/store/UserStore';
+import CarouselModal from '@/components/ui/CarouselModal';
 
 const menuItem = {
   _id: "1",
@@ -19,7 +20,7 @@ const menuItem = {
   basePrice: 120,
   images: [
     'https://i.pinimg.com/736x/74/55/86/7455861056a201b44b68a5ef65e36583.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFXK5esIT1QUF4zgwz7QVYsz2FSOt5sZ-PZA&s',
+    'https://i.pinimg.com/736x/f4/33/e4/f433e4ea38e6288b41170db2c9d2055e.jpg',
     
   ],
   likedBy: 5
@@ -29,6 +30,8 @@ export default function MenuDetailsPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [menuData, setMenuData] = useState(menuItem);
   const [menuCount, updateMenuCount] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
   // const [isLiked, likeMenu] = useState(false);
   const router = useRouter();
 
@@ -48,6 +51,11 @@ export default function MenuDetailsPage() {
   const userData = useUserStore((state) => state.user);
 
   const cartData = useCartProductsStore((state) => state.cartProducts);
+
+  const openModal = (index) => {
+    setStartIndex(index);
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     if (cartData?.length > 0) {
@@ -96,6 +104,15 @@ export default function MenuDetailsPage() {
 
 
   return (
+    <>
+      {modalOpen && (
+        <CarouselModal
+          images={menuItem.images}
+          startIndex={startIndex}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
+    
     <div className={`max-w-md mx-auto h-screen menu-details ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} scrollbar-hide`}>
       <div className='flex justify-between'>
         <BackButton />
@@ -115,13 +132,7 @@ export default function MenuDetailsPage() {
       </button> */}
       </div>
       <Card className={`rounded-2xl shadow-lg overflow-hidden ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} h-screen relative`}>
-        <Carousel className="w-full h-80" items={menuItem.images}>
-          {/* {menuItem.images.map((img, index) => (
-            <CarouselItem key={index} active={index === currentImageIndex}>
-              <img src={img} alt={`Image ${index + 1}`} className="w-full h-80 object-fill" />
-            </CarouselItem>
-          ))} */}
-        </Carousel>
+        <Carousel className="w-full h-80" items={menuItem.images} openModal={openModal} />
         <AddToCart
             menuItem={menuItem}
             handleAddToCard={manageCart}
@@ -186,5 +197,6 @@ export default function MenuDetailsPage() {
       </Card>
 
     </div>
+    </>
   );
 }

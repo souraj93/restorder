@@ -6,7 +6,7 @@ export const mockMenuItems = [
     basePrice: 120,
     category: { _id: "1", name: "Starters" },
     isVeg: true,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFXK5esIT1QUF4zgwz7QVYsz2FSOt5sZ-PZA&s",
+    image: "https://i.pinimg.com/736x/74/55/86/7455861056a201b44b68a5ef65e36583.jpg",
   },
   {
     _id: "2",

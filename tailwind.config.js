@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#dd7129",
+        primary: "#f5b042",
         secondary: "#f13a01",
         warning: "#F54180",
       },
@@ -24,3 +24,4 @@ module.exports = {
   darkMode: "class",
   plugins: [nextui()],
 };
+// dd7129

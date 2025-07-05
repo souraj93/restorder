@@ -115,7 +115,7 @@ export default function Header() {
                 checked={userData?.dark}
                 aria-label="Toggle dark/light mode"
               />
-              <div className="w-11 h-6 bg-gray-500 peer-focus:outline-none rounded-full peer  transition-colors"></div>
+              <div className="w-11 h-6 bg-gray-500 peer-focus:outline-none border rounded-full peer  transition-colors"></div>
               <div className="absolute left-1 top-1 w-4 h-4 transition-transform peer-checked:translate-x-5">
                 {userData?.dark ?
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block text-white align-top" fill="none" viewBox="0 0 24 24" stroke="currentColor">
